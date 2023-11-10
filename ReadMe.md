@@ -1,19 +1,42 @@
 # README for code submitted with the Stage II Registered Report
 
 ## Design analysis
-* The design analyses under the different conditions are conducted in the script 'design_analysis.R'. This script makes use of two functions that are defined in the following files:
 
-    * 'generateData_ANCOVA.R' defines a function to generate many datasets from an ANCOVA model
+### H1
+
+* Run the script 'design_analysis_H1.R'. This file makes use of functions from two other scripts:
+    * 'generateData_ANCOVA_H1.R' defines a function to generate many datasets from an ANCOVA model (for H1, where Implementation Intentions and Mental Contrasting have the same assumed effect size)
     * 'conductDA_ANCOVA.R' defines a function that applies the ANCOVA model to a list of generated datasets
 
-* 'analyzeDA_ANCOVA.R' contains functions for analyzing the results of the design analysis. Mostly for plotting and tables.
+* Run the script 'resultsDA_ANCOVA.R' to summarize design analysis results across multiple sample sizes. This script makes use of functions from the script 'analyzeDA_H1.R'
 
-* 'resultsDA_ANCOVA.R' applies the functions for analyzing design analysis results to the DA results created from this project.
+### H2
 
-* 'zzz_generateData_ANOVA.R' is a function to create data under the ANOVA model, but is currently not used in the design analysis
+* Run the script 'design_analysis_H2.R'. This file makes use of functions from five other scripts and contains the entire design analysis for H2, including plots and tables for all conditions:
+    * "generateData_ANCOVA_H1.R"
+    * "generateData_ANCOVA_H2.R"
+    * "conductDA_ANCOVA.R"
+    * "analyzeDA_H1.R"
+    * "analyzeDA_H2.R"
+    
+### H3
+
+* Run the script 'design_analysis_H3.R'. This file makes use of functions from three other scripts and contains the entire design analysis for H2, including plots and tables for all conditions:
+    * "generateData_ANOVA.R"
+ .  * "conductDA_ANOVA.R"
+    * "analyzeDA_H3H4.R"
+
+### H4
+
+* Run the script 'design_analysis_H4.R'. This file makes use of functions from three other scripts and contains the entire design analysis for H2, including plots and tables for all conditions:
+    * "generateData_ANOVA.R"
+ .  * "conductDA_ANOVA.R"
+    * "analyzeDA_H3H4.R"
 
 ## Prior predictives
-* 'prior_predictives.R' contains a script to produce prior predictive plots like the one in the manuscript and the supplementary materials from the ANCOVA model
+* 'prior_predictives.R' contains a script to produce prior predictive plots like the one in the manuscript and the supplementary materials for all hypotheses. The script makes use of the following two other scripts:
+    * "generateData_ANCOVA_H1.R"
+    * "generateData_ANOVA.R"
 
 ## Preregistered analyses
 * An overview of analyses that will be conducted on the collected data can be found in "preregistered_analyses.R'. This script uses simulated data created with the script 'generateData_Preregistration.R'.

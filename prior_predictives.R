@@ -5,7 +5,8 @@
 library(brms)
 library(MASS)
 library(truncnorm)
-source("generateData_ANCOVA.R")
+library(ggplot2)
+source("generateData_ANCOVA_H1.R")
 source("generateData_ANOVA.R")
 
 #### H1: Plot Prior Distributions ####
@@ -117,7 +118,7 @@ mtext("Density", side=2, line = 2, cex=1.5)
 #### H3: Plot Prior Predictive Distributions ####
 
 # Generate one dataset to obtain the right data structure
-dat <- simANOVA(iter=1, N = 350, meanControl = 2.3, sdWithinGroup = 1.2, effSingle = 0, effCombi = 0)[[1]]
+dat <- simANOVA(iter=1, N = 350, meanControl = 4, sdWithinGroup = 1.5, effimpInt = 0, effmentCont = 0, effCombi = 0)[[1]]
 
 # Set model priors
 modelpriors <- c(set_prior("normal(0, 2)", class = "b"),
@@ -164,7 +165,7 @@ mtext("Density", side=2, line = 2, cex=1.5)
 #### H4: Plot Prior Predictive Distributions ####
 
 # Generate one dataset to obtain the right data structure
-dat <- simANOVA(iter=1, N = 350, meanControl = 4.3, sdWithinGroup = 1.5, effSingle = 0, effCombi = 0)[[1]]
+dat <- simANOVA(iter=1, N = 350, meanControl = 4.3, sdWithinGroup = 1.5, effimpInt = 0, effmentCont = 0, effCombi = 0)[[1]]
 
 # Set model priors
 modelpriors <- c(set_prior("normal(0, 2)", class = "b"),
