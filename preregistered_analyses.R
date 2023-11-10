@@ -8,25 +8,31 @@
 
 ###########################  Load packages #####################################
 
-library(multibridge)  # Bayesian multinomial test
-library(Bayesrel)     # Bayesian reliability estimation
-library(brms)         # Bayesian regression
-library(bayestestR)   # Bayesian mediation analysis
+library(multibridge)    # Bayesian multinomial test
+library(Bayesrel)       # Bayesian reliability estimation
+library(brms)           # Bayesian regression
+library(bayestestR)     # Bayesian mediation analysis
 
 ############################# Load data ########################################
 
 load("./generated_data/preregDat.RData")
 set.seed(1234)
-dropout <- sample(0:15, size=4, replace=FALSE)
+dropout <- sample(1:660, size=50, replace=FALSE)
+exclusions <- sample(c(1:660)[!1:660 %in% dropout], size = 20, replace = FALSE)
 
 ###################### Drop-Out Rates Comparison ###############################
 
-ss_per_group <- as.vector(table(preregDat$treatment))
-mult_bf_equality(x = dropout, a = rep(1, 4))
+ss_per_group <- as.vector(table(preregDat$treatment[dropout]))
+mult_bf_equality(x = ss_per_group, a = rep(1, 4))
+
+############### Comparison of Participant Exclusion Rates ######################
+
+ss_per_group <- as.vector(table(preregDat$treatment[exclusions]))
+mult_bf_equality(x = ss_per_group, a = rep(1, 4))
 
 ############ Compute score values and add them to new dataset ##################
 
-datscores <- data.frame(matrix(NA, nrow=350, ncol=0))
+datscores <- data.frame(matrix(NA, nrow=660, ncol=0))
 datscores$baseline_physAct <- preregDat[, 1]
 datscores$baseline_automaticity <- rowMeans(preregDat[, 2:5])
 datscores$baseline_selfdet_amot <- rowMeans(preregDat[, 6:8])
@@ -39,22 +45,14 @@ datscores$baseline_sociocog_att <- rowMeans(preregDat[, 24:28])
 datscores$baseline_sociocog_subjnorm <- preregDat[, 29]
 datscores$baseline_sociocog_behControl <- rowMeans(preregDat[, 30:32])
 datscores$baseline_sociocog_intStrength <- rowMeans(preregDat[, 33:35])
-datscores$baseline_sociocog_incentValue <- preregDat[, 36]
-datscores$baseline_sociocog_expSuccess <- preregDat[, 37]
-datscores$treatment <- preregDat[, 38]
-datscores$post_energization <- rowMeans(preregDat[, 39:43])
-datscores$post_commitment <- rowMeans(preregDat[, 44:46])
-datscores$post_affcommitment <- rowMeans(preregDat[, 47:49])
-datscores$gender <- preregDat[, 50]
-datscores$age <- preregDat[,51]
-datscores$follow_physAct <- preregDat[,54]
-datscores$follow_automaticity <- rowMeans(preregDat[, 55:58])
-datscores$follow_selfdet_amot <- rowMeans(preregDat[, 59:61])
-datscores$follow_selfdet_extReg <- rowMeans(preregDat[, 62:64])
-datscores$follow_selfdet_intro <- rowMeans(preregDat[, 65:67])
-datscores$follow_selfdet_idReg <- rowMeans(preregDat[, 68:70])
-datscores$follow_selfdet_intReg <- rowMeans(preregDat[, 71:73])
-datscores$follow_selfdet_intMot <- rowMeans(preregDat[, 74:76])
+datscores$treatment <- preregDat[, 36]
+datscores$post_energization <- rowMeans(preregDat[, 37:41])
+datscores$post_commitment <- rowMeans(preregDat[, 42:44])
+datscores$post_affcommitment <- rowMeans(preregDat[, 45:47])
+datscores$gender <- preregDat[, 48]
+datscores$age <- preregDat[,49]
+datscores$follow_physAct <- preregDat[,52]
+datscores$follow_automaticity <- rowMeans(preregDat[, 53:56])
 
 ####### Compute McDonalds Omega for all scales consisting of multiple items ####
 
@@ -66,18 +64,33 @@ omega_baseline_selfdet_idReg <- strel(preregDat[, 15:17], estimates = "omega", B
 omega_baseline_selfdet_intReg <- strel(preregDat[, 18:20], estimates = "omega", Bayes=TRUE, freq = FALSE)
 omega_baseline_selfdet_intMot <- strel(preregDat[, 21:23], estimates = "omega", Bayes=TRUE, freq = FALSE)
 omega_baseline_sociocog_att <- strel(preregDat[, 24:28], estimates = "omega", Bayes=TRUE, freq = FALSE)
-omega_baseline_sociocog_behControl <- strel(preregDat[, 30:32], estimates = "omega", Bayes=TRUE, freq = FALSE)
 omega_baseline_sociocog_intStrength <- strel(preregDat[, 33:35], estimates = "omega", Bayes=TRUE, freq = FALSE)
-omega_post_energization <- strel(preregDat[, 39:43], estimates = "omega", Bayes=TRUE, freq = FALSE)
-omega_post_commitment <- strel(preregDat[, 44:46], estimates = "omega", Bayes=TRUE, freq = FALSE)
-omega_post_affcommitment <- strel(preregDat[, 47:49], estimates = "omega", Bayes=TRUE, freq = FALSE)
-omega_follow_automaticity <- strel(preregDat[, 55:58], estimates = "omega", Bayes=TRUE, freq = FALSE)
-omega_follow_selfdet_amot <- strel(preregDat[, 59:61], estimates = "omega", Bayes=TRUE, freq = FALSE)
-omega_follow_selfdet_extReg <- strel(preregDat[, 62:64], estimates = "omega", Bayes=TRUE, freq = FALSE)
-omega_follow_selfdet_intro <- strel(preregDat[, 65:67], estimates = "omega", Bayes=TRUE, freq = FALSE)
-omega_follow_selfdet_idReg <- strel(preregDat[, 68:70], estimates = "omega", Bayes=TRUE, freq = FALSE)
-omega_follow_selfdet_intReg <- strel(preregDat[, 71:73], estimates = "omega", Bayes=TRUE, freq = FALSE)
-omega_follow_selfdet_intMot <- strel(preregDat[, 74:76], estimates = "omega", Bayes=TRUE, freq = FALSE)
+omega_post_energization <- strel(preregDat[, 37:41], estimates = "omega", Bayes=TRUE, freq = FALSE)
+omega_post_commitment <- strel(preregDat[, 42:44], estimates = "omega", Bayes=TRUE, freq = FALSE)
+omega_post_affcommitment <- strel(preregDat[, 45:47], estimates = "omega", Bayes=TRUE, freq = FALSE)
+omega_follow_automaticity <- strel(preregDat[, 53:56], estimates = "omega", Bayes=TRUE, freq = FALSE)
+
+################################################################################
+
+# INTENTION TO TREAT VS. PER-PROTOCOL ANALYSIS
+
+# From here on out, we will conduct all analyses twice: Once with the entire 
+# usable dataset (i.e., preregDat[-dropout, ]), once with the dataset where
+# additional participants are excluded who did not follow the instructions or 
+# didn't understand the task (see criteria in the manuscript; i.e., 
+# preregDat[-c(dropout, exclusions),]).
+#
+# The first analysis constitutes the "intention to treat" analysis, the second
+# analysis the "per-protocol" analysis. We do not expect the results of these
+# analyses to differ much, but if there are differences, we will report these
+# in the manuscript.
+
+# For simplicity, we will not repeat the analyses in this script, and only
+# conduct the per protocol analysis to showcase the statistical procedures.
+# The only change in the intention-to-treat-analysis will be that the dataset
+# is slightly bigger.
+
+datscores <- datscores[-c(dropout, exclusions),]
 
 ############ H1: Hypothesis testing and parameter estimation ###################
 
@@ -97,6 +110,23 @@ mod1 <- brm(follow_physAct ~ baseline_physAct_centered + treatment,
             prior = modelpriors,
             sample_prior = "yes")
 
+mod1_2 <- brm(follow_physAct ~ baseline_physAct_centered * treatment, 
+            data = datscores, 
+            family = "gaussian",
+            prior = modelpriors,
+            sample_prior = "yes")
+
+# Test whether the assumption of parallel slopes, i.e., no interaction between
+# pretest scores and treatment effectiveness. If the interaction model explains
+# the data substantially better than the simple ANCOVA model (BF > 6), we will
+# interpret and test the coefficients of the interaction model mod1_2; otherwise
+# we will interpret the coefficients of the ANCOVA model.
+
+bayes_factor(mod1, mod1_2)
+
+# In the following, we will assume that the data are more likely to have occurred
+# under the ANCOVA model, and use mod1 for further analyses.
+
 # Parameter estimation
 summary(mod1)
 
@@ -112,8 +142,8 @@ H1f <- hypothesis(mod1, "treatmentimpInt = 0")
 if(H1a$hypothesis$Evid.Ratio < 1/6) H1a_postprob <- hypothesis(mod1, "treatmentcombiTreat - treatmentmentCont > 0")
 if(H1b$hypothesis$Evid.Ratio < 1/6) H1b_postprob <- hypothesis(mod1, "treatmentcombiTreat - treatmentimpInt > 0")
 if(H1c$hypothesis$Evid.Ratio < 1/6) H1c_postprob <- hypothesis(mod1, "treatmentcombiTreat > 0")
-if(H1d$hypothesis$Evid.Ratio < 1/6) H1e_postprob <- hypothesis(mod1, "treatmentmentCont > 0")
-if(H1e$hypothesis$Evid.Ratio < 1/6) H1f_postprob <- hypothesis(mod1, "treatmentimpInt > 0")
+if(H1e$hypothesis$Evid.Ratio < 1/6) H1f_postprob <- hypothesis(mod1, "treatmentmentCont > 0")
+if(H1f$hypothesis$Evid.Ratio < 1/6) H1f_postprob <- hypothesis(mod1, "treatmentimpInt > 0")
 
 ############ H2: Hypothesis testing and parameter estimation ###################
 
@@ -132,6 +162,23 @@ mod2 <- brm(follow_automaticity ~ baseline_automaticity_centered + treatment,
             prior = modelpriors,
             sample_prior = "yes")
 
+mod2_2 <- brm(follow_automaticity ~ baseline_automaticity_centered + treatment, 
+            data = datscores, 
+            family = "gaussian",
+            prior = modelpriors,
+            sample_prior = "yes")
+
+# Test whether the assumption of parallel slopes, i.e., no interaction between
+# pretest scores and treatment effectiveness. If the interaction model explains
+# the data substantially better than the simple ANCOVA model (BF > 6), we will
+# interpret and test the coefficients of the interaction model mod2_2; otherwise
+# we will interpret the coefficients of the ANCOVA model.
+
+bayes_factor(mod2, mod2_2)
+
+# In the following, we will assume that the data are more likely to have occurred
+# under the ANCOVA model, and use mod1 for further analyses.
+
 # Parameter estimation
 summary(mod2)
 
@@ -145,10 +192,8 @@ H2f <- hypothesis(mod2, "treatmentimpInt = 0")
 
 # Posterior probability if BF > 6
 if(H2a$hypothesis$Evid.Ratio < 1/6) H2a_postprob <- hypothesis(mod2, "treatmentcombiTreat - treatmentmentCont > 0")
-if(H2b$hypothesis$Evid.Ratio < 1/6) H2b_postprob <- hypothesis(mod2, "treatmentcombiTreat - treatmentimpInt > 0")
 if(H2c$hypothesis$Evid.Ratio < 1/6) H2c_postprob <- hypothesis(mod2, "treatmentcombiTreat > 0")
 if(H2d$hypothesis$Evid.Ratio < 1/6) H2d_postprob <- hypothesis(mod2, "treatmentimpInt - treatmentmentCont > 0")
-if(H2e$hypothesis$Evid.Ratio < 1/6) H2e_postprob <- hypothesis(mod2, "treatmentmentCont > 0")
 if(H2f$hypothesis$Evid.Ratio < 1/6) H2f_postprob <- hypothesis(mod2, "treatmentimpInt > 0")
 
 ############ H3: Hypothesis testing and parameter estimation ###################
@@ -217,7 +262,7 @@ if(H32e$hypothesis$Evid.Ratio < 1/6) H32e_postprob <- hypothesis(mod3_2, "treatm
 
 # Prior distributions
 modelpriors <- c(set_prior("normal(0, 2)", class = "b"),
-                 set_prior("normal(4.3, 1.5)", class = "Intercept", lb=0),
+                 set_prior("normal(4, 1.5)", class = "Intercept", lb=0),
                  set_prior("student_t(3, 0, 0.5)", class = "sigma"))
 
 # Model fitting
@@ -249,8 +294,6 @@ if(H4e$hypothesis$Evid.Ratio < 1/6) H4e_postprob <- hypothesis(mod4, "treatmentm
 # Data preparation
 datscores$baseline_sociocog_att_centered <- datscores$baseline_sociocog_att-mean(datscores$baseline_sociocog_att)
 datscores$baseline_sociocog_behControl_centered <- datscores$baseline_sociocog_behControl-mean(datscores$baseline_sociocog_behControl)
-datscores$baseline_sociocog_expSuccess_centered <- datscores$baseline_sociocog_expSuccess-mean(datscores$baseline_sociocog_expSuccess)
-datscores$baseline_sociocog_incentValue_centered <- datscores$baseline_sociocog_incentValue-mean(datscores$baseline_sociocog_incentValue)
 datscores$baseline_sociocog_intStrength_centered <- datscores$baseline_sociocog_intStrength-mean(datscores$baseline_sociocog_intStrength)
 datscores$baseline_sociocog_subjnorm_centered <- datscores$baseline_sociocog_subjnorm-mean(datscores$baseline_sociocog_subjnorm)
 datscores$baseline_selfdet_amot_centered <- datscores$baseline_selfdet_amot-mean(datscores$baseline_selfdet_amot) 
@@ -280,57 +323,6 @@ summary(modexp_att)
 H_att1 <- hypothesis(modexp_att, "treatmentimpInt:baseline_sociocog_att_centered = 0")
 H_att2 <- hypothesis(modexp_att, "treatmentmentCont:baseline_sociocog_att_centered = 0")
 H_att3 <- hypothesis(modexp_att, "treatmentcombiTreat:baseline_sociocog_att_centered  = 0")
-
-#### Behavioral control at baseline ####
-
-# Model fitting
-modexp_behControl <- brm(follow_physAct ~ baseline_physAct_centered + treatment*baseline_sociocog_behControl_centered,
-                         data = datscores, 
-                         family = "gaussian",
-                         prior = modelpriors,
-                         sample_prior = "yes") 
-                  
-# Parameter estimation
-summary(modexp_behControl)
-
-# Hypothesis testing
-H_behControl1 <- hypothesis(modexp_behControl, "treatmentimpInt:baseline_sociocog_behControl_centered = 0")
-H_behControl2 <- hypothesis(modexp_behControl, "treatmentmentCont:baseline_sociocog_behControl_centered = 0")
-H_behControl3 <- hypothesis(modexp_behControl, "treatmentcombiTreat:baseline_sociocog_behControl_centered  = 0")
-
-#### Expected success at baseline ####
-
-# Model fitting
-modexp_expSuccess <- brm(follow_physAct ~ baseline_physAct_centered + treatment*baseline_sociocog_expSuccess_centered,
-                         data = datscores, 
-                         family = "gaussian",
-                         prior = modelpriors,
-                         sample_prior = "yes") 
-
-# Parameter estimation
-summary(modexp_expSuccess)
-
-# Hypothesis testing
-H_expSuccess1 <- hypothesis(modexp_att, "treatmentimpInt:baseline_sociocog_expSuccess_centered = 0")
-H_expSuccess2 <- hypothesis(modexp_att, "treatmentmentCont:baseline_sociocog_expSuccess_centered = 0")
-H_expSuccess3 <- hypothesis(modexp_att, "treatmentcombiTreat:baseline_sociocog_expSuccess_centered  = 0")
-
-#### Incentive value at baseline ####
-
-# Model fitting
-modexp_incentValue <- brm(follow_physAct ~ baseline_physAct_centered + treatment*baseline_sociocog_incentValue_centered,
-                          data = datscores, 
-                          family = "gaussian",
-                          prior = modelpriors,
-                          sample_prior = "yes") 
-
-# Parameter estimation
-summary(modexp_incentValue)
-
-# Hypothesis testing
-H_incentValue1 <- hypothesis(modexp_incentValue, "treatmentimpInt:baseline_sociocog_incentValue_centered = 0")
-H_incentValue2 <- hypothesis(modexp_incentValue, "treatmentmentCont:baseline_sociocog_incentValue_centered = 0")
-H_incentValue3 <- hypothesis(modexp_incentValue, "treatmentcombiTreat:baseline_sociocog_incentValue_centered  = 0")
 
 #### Strength of intention at baseline ####
 
@@ -488,51 +480,4 @@ med4 <- brm(f1+f2+set_rescor(FALSE), data = datscores)
 
 mediation(med4)
 
-#### treatment -> physical activity -> amotivation ####
-
-f1 <- bf(follow_physAct ~ treatment)
-f2 <- bf(follow_selfdet_amot ~ treatment + follow_physAct)
-med5 <- brm(f1+f2+set_rescor(FALSE), data = datscores)
-
-mediation(med5)
-
-#### treatment -> physical activity -> external regulation ####
-
-f1 <- bf(follow_physAct ~ treatment)
-f2 <- bf(follow_selfdet_extReg ~ treatment + follow_physAct)
-med6 <- brm(f1+f2+set_rescor(FALSE), data = datscores)
-
-mediation(med6)
-
-#### treatment -> physical activity -> introjection ####
-
-f1 <- bf(follow_physAct ~ treatment)
-f2 <- bf(follow_selfdet_intro ~ treatment + follow_physAct)
-med7 <- brm(f1+f2+set_rescor(FALSE), data = datscores)
-
-mediation(med7)
-
-#### treatment -> physical activity -> identified regulation ####
-
-f1 <- bf(follow_physAct ~ treatment)
-f2 <- bf(follow_selfdet_idReg ~ treatment + follow_physAct)
-med8 <- brm(f1+f2+set_rescor(FALSE), data = datscores)
-
-mediation(med8)
-
-#### treatment -> physical activity -> integrated regulation ####
-
-f1 <- bf(follow_physAct ~ treatment)
-f2 <- bf(follow_selfdet_intReg ~ treatment + follow_physAct)
-med9 <- brm(f1+f2+set_rescor(FALSE), data = datscores)
-
-mediation(med9)
-
-#### treatment -> physical activity -> intrinsic motivation ####
-
-f1 <- bf(follow_physAct ~ treatment)
-f2 <- bf(follow_selfdet_intMot ~ treatment + follow_physAct)
-med10 <- brm(f1+f2+set_rescor(FALSE), data = datscores)
-
-mediation(med10)
 
