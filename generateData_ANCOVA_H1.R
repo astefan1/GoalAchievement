@@ -1,5 +1,5 @@
 # ==============================================================================
-# GENERIC DATA SIMULATION FUNCTION FOR ANCOVA
+# GENERIC DATA SIMULATION FUNCTION FOR ANCOVA (HYPOTHESIS 1)
 # ==============================================================================
 
 #'@param iter Number of generated datasets
@@ -37,11 +37,11 @@ simANCOVA <- function(iter = 100, N = 250, meanControl = 13.4, sdWithinGroup = 7
   
   treatment <- as.factor(treatment)
   levels(treatment) <- c("control", "impInt", "mentCont", "combiTreat")
-  id <- 1:N*iter
+  id <- 1:N
   
   for(i in 1:iter){
     
-    res[[i]] <- data.frame(id = id[(N*i-N+1):(N*i)],
+    res[[i]] <- data.frame(id = id,
                            physAct_Post = physAct_PrePost[(N*i-N+1):(N*i), 2],
                            physAct_Pre = physAct_PrePost[(N*i-N+1):(N*i), 1],
                            treatment = treatment[(N*i-N+1):(N*i)])

@@ -9,7 +9,7 @@
 #'@param effSingle Effect size of single treatments
 #'@param effCombi Effect combined treatment
 
-simANOVA <- function(iter = 100, N = 250, meanControl = 13.4, sdWithinGroup = 7.2, effSingle = 0, effCombi = 0, retestReliability = 0.75){
+simANOVA <- function(iter = 100, N = 250, meanControl = 0, sdWithinGroup = 1, effimpInt = 0, effmentCont = 0, effCombi = 0){
   
   res <- vector("list", iter)
   
@@ -24,7 +24,7 @@ simANOVA <- function(iter = 100, N = 250, meanControl = 13.4, sdWithinGroup = 7.
   DV <- rnorm(N*iter, mean=meanControl, sd = sdWithinGroup)
   
   # Adding treatment effects for post measurements
-  DV <- DV + effSingle*impInt + effSingle*mentCont + effCombi*combiTreat
+  DV <- DV + effimpInt*impInt + effmentCont*mentCont + effCombi*combiTreat
   
   treatment <- as.factor(treatment)
   levels(treatment) <- c("control", "impInt", "mentCont", "combiTreat")

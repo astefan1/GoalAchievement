@@ -1,19 +1,20 @@
 # ==============================================================================
-# Functions to analyze the Monte Carlo draws of the design analysis
+# Functions to analyze the Monte Carlo draws of the design analysis for H1
 # ==============================================================================
 
 #' Plot the means of the posterior distribution
 #' @param DAresult Result object of the DA_ANCOVA() function
 #' @param trueIntercept True value of the intercept parameter in the simulation
 #' @param trueRR True retest reliability value in the simulation
-#' @param trueSingleEffect True value of the effect of single treatments in the simulation
+#' @param trueImpIntEffect True value of the effect of Implementation Intentions in the simulation
+#' @param trueMentContEffect True value of the effect of Mental Contrasting in the simulation
 #' @param trueCombiEffect True value of the combined treatment effect in the simulation
 #' @param xlimIntercept xlim values for the intercept figures
 #' @param xlimBeta xlim values for the beta2, beta3, and beta4 figures
 #' @param xlimBeta1 xlim value for the beta1 figures
 #' @param xlimSigma xlim value for the sigma figures
 
-analyze_DA_postMeans <- function(DAresult, trueIntercept=13.4, trueRR = 0.75, trueSingleEffect=0, trueCombiEffect=0, xlimIntercept=c(11,16), xlimBeta=c(-3,3), xlimBeta1=c(0.4,0.8), xlimSigma=c(5,7)){
+analyze_DA_postMeans <- function(DAresult, trueIntercept=13.4, trueRR = 0.75, trueImpIntEffect=0, trueMentContEffect=0, trueCombiEffect=0, xlimIntercept=c(11,16), xlimBeta=c(-3,3), xlimBeta1=c(0.4,0.8), xlimSigma=c(5,7)){
   
   # extract posterior means
   N <- length(DAresult)
@@ -41,7 +42,7 @@ analyze_DA_postMeans <- function(DAresult, trueIntercept=13.4, trueRR = 0.75, tr
   # Beta2 Boxplot
   boxplot(postMeansSim$b_treatmentimpInt, xaxt = "n", yaxt = "n", bty = "n", 
           col = "white", frame = FALSE, horizontal = TRUE, ylim=xlimBeta)
-  abline(v=trueSingleEffect, lty = "dotted", lwd=2, col="blue")
+  abline(v=trueImpIntEffect, lty = "dotted", lwd=2, col="blue")
   
   par(mar=c(5,4,0,2))
   
@@ -55,14 +56,14 @@ analyze_DA_postMeans <- function(DAresult, trueIntercept=13.4, trueRR = 0.75, tr
   
   # Beta2 Histogram
   hist(postMeansSim$b_treatmentimpInt, main="", xlab = "beta2", ylab="", xlim=xlimBeta)
-  abline(v=trueSingleEffect, lty = "dotted", lwd=2, col="blue")
+  abline(v=trueImpIntEffect, lty = "dotted", lwd=2, col="blue")
   
   par(mar=c(0,4,0,2))
   
   # Beta3 Boxplot
   boxplot(postMeansSim$b_treatmentmentCont, xaxt = "n", yaxt = "n", bty = "n", 
           col = "white", frame = FALSE, horizontal = TRUE, ylim=xlimBeta)
-  abline(v=trueSingleEffect, lty = "dotted", lwd=2, col="blue")
+  abline(v=trueMentContEffect, lty = "dotted", lwd=2, col="blue")
   
   # Beta4 Boxplot
   boxplot(postMeansSim$b_treatmentcombiTreat, xaxt = "n", yaxt = "n", bty = "n", 
@@ -77,7 +78,7 @@ analyze_DA_postMeans <- function(DAresult, trueIntercept=13.4, trueRR = 0.75, tr
   
   # Beta3 Histogram
   hist(postMeansSim$b_treatmentmentCont, main="", xlab = "beta3", ylab="", xlim=xlimBeta)
-  abline(v=trueSingleEffect, lty = "dotted", lwd=2, col="blue")
+  abline(v=trueMentContEffect, lty = "dotted", lwd=2, col="blue")
   
   # Beta4 Histogram
   hist(postMeansSim$b_treatmentcombiTreat, main="", xlab = "beta4", ylab="", xlim=xlimBeta)
@@ -88,7 +89,8 @@ analyze_DA_postMeans <- function(DAresult, trueIntercept=13.4, trueRR = 0.75, tr
   
 }
 
-#' Posterior probabilities and Bayes factors for all sub-hypotheses
+#' Posterior probabilities and Bayes factors for all sub-hypotheses for 
+#' one simulation condition (sample size, retest reliability, H0/H1)
 #' @param DAresult Result object of the DA_ANCOVA() function
 
 analyze_DA_Effects <- function(DAresult){
@@ -135,62 +137,64 @@ analyze_DA_Effects <- function(DAresult){
               H1f = H1f))
 }
 
-#' Plot BF Distribution
-#' @param DAEffects Result object of analyze_DA_Effects()
-#' @param hypothesis Which hypothesis is being tested? H1a-H1f
+#' Summarize Bayes factors for all sample sizes of a certain condition (retest
+#' reliability, H0/H1)
+#' @param hypothesis "H0" or "H1"
+#' @param rr 75 or 60 
 
-plotBFdist <- function(DAEffects, hypothesis="H1a"){
+DA_results <- function(hypothesis, rr){
   
-  df <- as.data.frame(DAEffects[[hypothesis]])
-  colnames(df) <- c("BF", "postProb")
-  BF <- 1/df$BF
-  logBF <- log(1/df$BF)
+  Ns <- seq(300, 600, by = 50)
+  tests <- c("H1a", "H1b", "H1c", "H1d", "H1e", "H1f")
+  res <- array(NA, dim = c(length(Ns), 9, 6))
   
-  par(oma=c(6,0,0,0), mar=c(5,5,4,1))
-  hist(logBF, breaks=c(min(logBF, na.rm=TRUE), 
-                       log(c(1/100, 1/10, 1, 10, 100, 1000, 1e+6)), 
-                       max(logBF, na.rm = TRUE)), 
-       xlab = "Bayes Factor", ylab = "Density", 
-       main=hypothesis, cex.axis=2, cex.lab = 2, cex.main=2, xaxt="n", 
-       prob=TRUE, xlim=log(c(1/1000, 1e+6)))
-  axis(1, at=log(c(1/100, 1/10, 0, 10, 100, 1000, 1e+6)), 
-       labels = c("1/100", "1/10", "0", "10", "100", "1000", "1000000"), 
-       cex.axis = 2)
-  mtext(paste0("p(BF > 1) = ", 
-               round(sum(logBF > 0, na.rm = TRUE)/sum(!is.na(logBF)), 
-                     3)), 
-        side = 1, line = 1, cex=2, outer = TRUE)
-  mtext(paste0("p(BF > 6) = ", 
-               round(sum(logBF > log(6), na.rm = TRUE)/sum(!is.na(logBF)), 
-                     3), 
-               ", p(BF > 10) = ", 
-               round(sum(logBF > log(10), na.rm = TRUE)/sum(!is.na(logBF)), 
-                     3)), 
-        side = 1, line = 2.6, cex=2, outer = TRUE)
-  mtext(paste0("p(BF < 1/6) = ", 
-               round(sum(logBF < log(1/6), na.rm = TRUE)/sum(!is.na(logBF)), 
-                     3), 
-               ", p(BF < 1/10) = ", 
-               round(sum(logBF < log(1/10), na.rm = TRUE)/sum(!is.na(logBF)), 
-                     3)), 
-        side = 1, line = 4.2, cex=2, outer = TRUE)
-  abline(v=0, lwd=2, col="blue", lty="dashed")
-  abline(v=log(10), lwd=2, col="blue", lty="dashed")
-  abline(v=log(1/10), lwd=2, col="blue", lty="dashed")
+  for(i in 1:length(Ns)){
+    
+    temp <- get(paste0("DA_", hypothesis, "_rr", rr, "_N", Ns[i]))
+    tempEff <- analyze_DA_Effects(temp)
+    
+    for(j in 1:6){
+      BF <- 1/tempEff[[tests[j]]][,1]
+      res[i, , j] <- table(cut(BF, c(-Inf, 0, 1/10, 1/6, 1/3, 1, 3, 6, 10, Inf)))
+    }
+  }
   
+  return(res)
 }
 
-#' Plot conditional posterior probability
+#' Plot Bayes factor distributions across all sample sizes per sub-hypothesis
+#' @param DA_result result object of the DA_results function
+#' @param hyp Which sub-hypothesis (1 to 6 for H1a, H1b, ..., H1f)
+#' @param main Plot title
+#' @param truehyp Is H0 or H1 the data generating process?
 
-plotPostProb <- function(DAEffects){
+plot_DAresults <- function(DA_result = res_H1_rr75, hyp = 1, main = "H1a", truehyp = "H1"){
   
-  par(mfrow=c(2,3))
-  hist(DAEffects$H1a[DAEffects$H1a[,1]<1/6,2], ylab="Density", xlab = "Posterior Probability", main = "H1a", prob = TRUE, breaks = 30)
-  hist(DAEffects$H1b[DAEffects$H1b[,1]<1/6,2], ylab="Density", xlab = "Posterior Probability", main = "H1b", prob = TRUE, breaks = 30)
-  hist(DAEffects$H1c[DAEffects$H1c[,1]<1/6,2], ylab="Density", xlab = "Posterior Probability", main = "H1c", prob = TRUE, breaks = 30)
-  hist(DAEffects$H1e[DAEffects$H1e[,1]<1/6,2], ylab="Density", xlab = "Posterior Probability", main = "H1e", prob = TRUE, breaks = 30)
-  hist(DAEffects$H1f[DAEffects$H1f[,1]<1/6,2], ylab="Density", xlab = "Posterior Probability", main = "H1f", prob = TRUE, breaks = 30)
+  cols <- c(NA, NA, "NA", "pink", "yellow", "yellow", "green2", "green4")
+  Ns <- seq(300, 600, by = 50)
   
+  plot(Ns, rowSums(DA_result[, 2:5, hyp])/rowSums(DA_result[, 2:9, hyp]), ylim=c(0,1), 
+       type="l", xlab = "Sample Size", ylab = "Cumulative Probability", main = main)
+  polygon(c(Ns, rev(Ns)), 
+          c(rowSums(DA_result[, 2:8, hyp])/rowSums(DA_result[, 2:9, hyp]), 
+            rowSums(DA_result[, 2:9, hyp])/rowSums(DA_result[, 2:9, hyp])), 
+          col="darkgreen")
+  polygon(c(Ns, rev(Ns)), 
+          c(DA_result[, 2, hyp]/rowSums(DA_result[, 2:9, hyp]), rep(0, 7)), 
+          col="darkred")
+  polygon(c(Ns, rev(Ns)), 
+          c(rowSums(DA_result[, 2:3, hyp])/rowSums(DA_result[, 2:9, hyp]), 
+            rev(DA_result[, 2, hyp]/rowSums(DA_result[, 2:9, hyp]))), 
+          col="red")
+  for(i in 4:8){
+    polygon(c(Ns, rev(Ns)), 
+            c(rowSums(DA_result[, 2:i, hyp])/rowSums(DA_result[, 2:9, hyp]), 
+              rev(rowSums(DA_result[, 2:(i-1), hyp])/rowSums(DA_result[, 2:9, hyp]))), 
+            col=cols[i])
+  }
+  abline(h=ifelse(truehyp=="H1", 0.05, 0.95), lwd=2, col="darkgrey", lty="dashed")
+  points(Ns, rowSums(DA_result[, 2:5, hyp])/rowSums(DA_result[, 2:9, hyp]), 
+         ylim=c(0,1), type="l", lwd=3)
   
 }
 

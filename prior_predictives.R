@@ -4,13 +4,14 @@
 
 library(brms)
 library(MASS)
+library(truncnorm)
 source("generateData_ANCOVA.R")
 source("generateData_ANOVA.R")
 
 #### H1: Plot Prior Distributions ####
 
 par(mfrow=c(3,1))
-curve(dnorm(x, mean=13.4, sd=15), xlim=c(-10, 50), xlab="Intercept", ylab="", main="Prior Distributions", yaxt="n", cex.lab=2, cex.axis=2, cex.main=2)
+curve(dtruncnorm(x, a = 0, b = Inf, mean=13.4, sd=15), xlim=c(0, 50), xlab="Intercept", ylab="", main="Prior Distributions", yaxt="n", cex.lab=2, cex.axis=2, cex.main=2)
 mtext("Density", side=2, line = 2, cex=1.5)
 curve(dnorm(x, mean=0, sd=10), xlim=c(-50, 50), xlab="Regression Coefficients", ylab="", yaxt="n", cex.lab=2, cex.axis=2, cex.main=2)
 mtext("Density", side=2, line = 2, cex=1.5)
@@ -58,13 +59,12 @@ ggplot(priorPred_long, aes(x = Var2, y = value)) +
 #### H2: Plot Prior Distributions ####
 
 par(mfrow=c(3,1))
-curve(dnorm(x, mean=2.3, sd=1), xlim=c(-1, 10), xlab="Intercept", ylab="", main="Prior Distributions", yaxt="n", cex.lab=2, cex.axis=2, cex.main=2)
+curve(dtruncnorm(x, a = 0, b = Inf, mean=2.3, sd=1), xlim=c(-1, 10), xlab="Intercept", ylab="", main="Prior Distributions", yaxt="n", cex.lab=2, cex.axis=2, cex.main=2, n = 1000)
 mtext("Density", side=2, line = 2, cex=1.5)
 curve(dnorm(x, mean=0, sd=1.5), xlim=c(-5, 5), xlab="Regression Coefficients", ylab="", yaxt="n", cex.lab=2, cex.axis=2, cex.main=2)
 mtext("Density", side=2, line = 2, cex=1.5)
 curve(brms::dstudent_t(x, df=3, mu=0, sigma=0.7), xlim=c(0, 10), xlab="Standard Deviation", ylab="", yaxt="n", cex.lab=2, cex.axis=2, cex.main=2)
 mtext("Density", side=2, line = 2, cex=1.5)
-
 
 #### H2: Plot Prior Predictive Distributions ####
 
@@ -107,7 +107,7 @@ ggplot(priorPred_long, aes(x = Var2, y = value)) +
 #### H3: Prior Distributions ####
 
 par(mfrow=c(3,1))
-curve(dnorm(x, mean=4, sd=1.5), xlim=c(-1, 10), xlab="Intercept", ylab="", main="Prior Distributions", yaxt="n", cex.lab=2, cex.axis=2, cex.main=2)
+curve(dtruncnorm(x, a = 0, b = Inf, mean=4, sd=1.5), xlim=c(-1, 10), xlab="Intercept", ylab="", main="Prior Distributions", yaxt="n", n = 1000, cex.lab=2, cex.axis=2, cex.main=2)
 mtext("Density", side=2, line = 2, cex=1.5)
 curve(dnorm(x, mean=0, sd=2), xlim=c(-5, 5), xlab="Regression Coefficients", ylab="", yaxt="n", cex.lab=2, cex.axis=2, cex.main=2)
 mtext("Density", side=2, line = 2, cex=1.5)
@@ -154,7 +154,7 @@ ggplot(priorPred_long, aes(x = Var2, y = value)) +
 #### H4: Prior Distributions ####
 
 par(mfrow=c(3,1))
-curve(dnorm(x, mean=4.3, sd=1.5), xlim=c(-1, 10), xlab="Intercept", ylab="", main="Prior Distributions", yaxt="n", cex.lab=2, cex.axis=2, cex.main=2)
+curve(dtruncnorm(x, a = 0, b = Inf, mean=4.3, sd=1.5), xlim=c(-1, 10), xlab="Intercept", n = 1000, ylab="", main="Prior Distributions", yaxt="n", cex.lab=2, cex.axis=2, cex.main=2)
 mtext("Density", side=2, line = 2, cex=1.5)
 curve(dnorm(x, mean=0, sd=2), xlim=c(-5, 5), xlab="Regression Coefficients", ylab="", yaxt="n", cex.lab=2, cex.axis=2, cex.main=2)
 mtext("Density", side=2, line = 2, cex=1.5)

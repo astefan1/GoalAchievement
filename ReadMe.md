@@ -6,11 +6,11 @@
     * 'generateData_ANCOVA.R' defines a function to generate many datasets from an ANCOVA model
     * 'conductDA_ANCOVA.R' defines a function that applies the ANCOVA model to a list of generated datasets
 
-* 'generateData_ANOVA.R' is a function to create data under the ANOVA model, but is currently not used in the design analysis
-
-* 'analyzeDA_ANCOVA.R' contains functions for analyzing the results of the design analysis. Mostly for plotting.
+* 'analyzeDA_ANCOVA.R' contains functions for analyzing the results of the design analysis. Mostly for plotting and tables.
 
 * 'resultsDA_ANCOVA.R' applies the functions for analyzing design analysis results to the DA results created from this project.
+
+* 'zzz_generateData_ANOVA.R' is a function to create data under the ANOVA model, but is currently not used in the design analysis
 
 ## Prior predictives
 * 'prior_predictives.R' contains a script to produce prior predictive plots like the one in the manuscript and the supplementary materials from the ANCOVA model
