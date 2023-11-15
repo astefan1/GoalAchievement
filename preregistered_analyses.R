@@ -12,6 +12,7 @@ library(multibridge)    # Bayesian multinomial test
 library(Bayesrel)       # Bayesian reliability estimation
 library(brms)           # Bayesian regression
 library(bayestestR)     # Bayesian mediation analysis
+library(readr)          # parse character vectors
 
 ############################# Load data ########################################
 
@@ -64,6 +65,7 @@ omega_baseline_selfdet_idReg <- strel(preregDat[, 15:17], estimates = "omega", B
 omega_baseline_selfdet_intReg <- strel(preregDat[, 18:20], estimates = "omega", Bayes=TRUE, freq = FALSE)
 omega_baseline_selfdet_intMot <- strel(preregDat[, 21:23], estimates = "omega", Bayes=TRUE, freq = FALSE)
 omega_baseline_sociocog_att <- strel(preregDat[, 24:28], estimates = "omega", Bayes=TRUE, freq = FALSE)
+omega_baseline_behControl <- strel(preregDat[, 30:32], estimates = "omega", Bayes=TRUE, freq = FALSE)
 omega_baseline_sociocog_intStrength <- strel(preregDat[, 33:35], estimates = "omega", Bayes=TRUE, freq = FALSE)
 omega_post_energization <- strel(preregDat[, 37:41], estimates = "omega", Bayes=TRUE, freq = FALSE)
 omega_post_commitment <- strel(preregDat[, 42:44], estimates = "omega", Bayes=TRUE, freq = FALSE)
@@ -214,6 +216,23 @@ mod3_1 <- brm(post_commitment ~ baseline_sociocog_intStrength_centered + treatme
               family = "gaussian",
               prior = modelpriors,
               sample_prior = "yes")
+
+mod3_1_2 <- brm(post_commitment ~ baseline_sociocog_intStrength_centered * treatment,
+              data = datscores, 
+              family = "gaussian",
+              prior = modelpriors,
+              sample_prior = "yes")
+
+# Test whether the assumption of parallel slopes, i.e., no interaction between
+# pretest scores and treatment effectiveness. If the interaction model explains
+# the data substantially better than the simple ANCOVA model (BF > 6), we will
+# interpret and test the coefficients of the interaction model mod3_1_2; otherwise
+# we will interpret the coefficients of the ANCOVA model.
+
+bayes_factor(mod3_1, mod3_1_2)
+
+# In the following, we will assume that the data are more likely to have occurred
+# under the ANCOVA model, and use mod1 for further analyses.
             
 # Parameter estimation
 summary(mod3_1)
@@ -358,6 +377,23 @@ H_subjnorm1 <- hypothesis(modexp_subjnorm, "treatmentimpInt:baseline_sociocog_su
 H_subjnorm2 <- hypothesis(modexp_subjnorm, "treatmentmentCont:baseline_sociocog_subjnorm_centered = 0")
 H_subjnorm3 <- hypothesis(modexp_subjnorm, "treatmentcombiTreat:baseline_sociocog_subjnorm_centered  = 0")
 
+#### Behavioral control at baseline ####
+
+# Model fitting
+modexp_behControl <- brm(follow_physAct ~ baseline_physAct_centered + treatment*baseline_sociocog_behControl_centered,
+                         data = datscores, 
+                         family = "gaussian",
+                         prior = modelpriors,
+                         sample_prior = "yes") 
+
+# Parameter estimation
+summary(modexp_behControl)
+
+# Hypothesis testing
+H_behControl1 <- hypothesis(modexp_behControl, "treatmentimpInt:baseline_sociocog_behControl_centered = 0")
+H_behControl2 <- hypothesis(modexp_behControl, "treatmentmentCont:baseline_sociocog_behControl_centered = 0")
+H_behControl3 <- hypothesis(modexp_behControl, "treatmentcombiTreat:baseline_sociocog_behControl_centered  = 0")
+
 #### Amotivation at baseline ####
 
 # Model fitting
@@ -409,6 +445,23 @@ H_idReg1 <- hypothesis(modexp_idReg, "treatmentimpInt:baseline_selfdet_idReg_cen
 H_idReg2 <- hypothesis(modexp_idReg, "treatmentmentCont:baseline_selfdet_idReg_centered = 0")
 H_idReg3 <- hypothesis(modexp_idReg, "treatmentcombiTreat:baseline_selfdet_idReg_centered  = 0")
 
+#### Integrated Regulation ####
+
+# Model fitting
+modexp_intReg <- brm(follow_physAct ~ baseline_physAct_centered + treatment*baseline_selfdet_intReg_centered,
+                    data = datscores, 
+                    family = "gaussian",
+                    prior = modelpriors,
+                    sample_prior = "yes") 
+
+# Parameter estimation
+summary(modexp_intReg)
+
+# Hypothesis testing
+H_intReg1 <- hypothesis(modexp_idReg, "treatmentimpInt:baseline_selfdet_intReg_centered = 0")
+H_intReg2 <- hypothesis(modexp_idReg, "treatmentmentCont:baseline_selfdet_intReg_centered = 0")
+H_intReg3 <- hypothesis(modexp_idReg, "treatmentcombiTreat:baseline_selfdet_intReg_centered  = 0")
+
 #### Intrinsic Motivation at baseline ####
 
 # Model fitting
@@ -458,8 +511,8 @@ mediation(med1)
 
 #### treatment -> motivational commitment -> physical activity ####
 
-f1 <- bf(post_commitment ~ baseline_physAct_centered + treatment)
-f2 <- bf(follow_physAct ~ baseline_physAct_centered + treatment + post_commitment)
+f1 <- bf(post_commitment ~ baseline_physAct_centered + baseline_sociocog_intStrength_centered + treatment)
+f2 <- bf(follow_physAct ~ baseline_physAct_centered + baseline_sociocog_intStrength_centered + treatment + post_commitment)
 med2 <- brm(f1+f2+set_rescor(FALSE), data = datscores)
 
 mediation(med2)
@@ -474,10 +527,136 @@ mediation(med3)
 
 #### treatment -> experienced automaticity -> physical activity ####
 
-f1 <- bf(follow_automaticity ~ baseline_physAct_centered + treatment)
-f2 <- bf(follow_physAct ~ baseline_physAct_centered + treatment + follow_automaticity)
+f1 <- bf(follow_automaticity ~ baseline_physAct_centered + baseline_automaticity_centered + treatment)
+f2 <- bf(follow_physAct ~ baseline_physAct_centered + baseline_automaticity_centered + treatment + follow_automaticity)
 med4 <- brm(f1+f2+set_rescor(FALSE), data = datscores)
 
 mediation(med4)
 
+############## Robustness Checks: Discrete Regression Models ###################
+
+#### Hypothesis 1: Physical Activity ####
+
+# Prior distributions
+modelpriors <- c(set_prior("normal(0, 2.3)", class = "b"),
+                 set_prior("normal(2.6, 2.7)", class = "Intercept", lb=0))
+
+# Model fitting
+mod1_r <- brm(follow_physAct ~ baseline_physAct + treatment,
+              data = datscores, 
+              family = "poisson",
+              prior = modelpriors,
+              sample_prior = "yes")
+
+# Parameter estimation
+summary(mod1_r)
+
+# Model comparison to initial analysis
+bayes_factor(mod1, mod1_r)
+
+#### Hypothesis 2: Automaticity ####
+
+# Data preparation
+
+autoData <- cbind(preregDat[, 2:5], preregDat[, 53:56], treatment=preregDat$treatment, ID_person=seq(1, nrow(preregDat)))
+autoData_long <-  reshape2::melt(autoData, id.vars = c("ID_person", "treatment"))
+autoData_long$time <- as.numeric(grepl("follow", autoData_long$variable))
+colnames(autoData_long)[4] <- c("automaticity")
+autoData_long$treatment <- factor(autoData_long$treatment, levels = c("control", "impInt", "mentCont", "combiTreat"))
+autoData_long$item <- parse_number(as.character(autoData_long$variable))
+
+# Prior distributions
+modelpriors <- c(set_prior("normal(0, 1.5)", class = "b"),
+                 set_prior("normal(2.3, 1)", class = "Intercept", lb=0))
+
+# Model fitting
+mod2_r <- brm(automaticity ~ 1 + cs(time*treatment) + (1 | ID_person) + (1 | item),
+              data = autoData_long, 
+              family = acat("probit"),
+              prior = modelpriors,
+              sample_prior = "yes")
+
+# Parameter estimation
+summary(mod2_r)
+
+# Model comparison to initial analysis
+bayes_factor(mod2, mod2_r)
+
+#### Hypothesis 3-1: Motivational Goal Commitment ####
+
+# Data preparation
+
+motcomData <- cbind(preregDat[, 33:35], preregDat[, 42:44], treatment=preregDat$treatment, ID_person=seq(1, nrow(preregDat)))
+motcomData_long <-  reshape2::melt(motcomData, id.vars = c("ID_person", "treatment"))
+motcomData_long$time <- as.numeric(grepl("follow", motcomData_long$variable))
+colnames(motcomData_long)[4] <- c("motCommitment")
+motcomData_long$treatment <- factor(motcomData_long$treatment, levels = c("control", "impInt", "mentCont", "combiTreat"))
+motcomData_long$item <- parse_number(as.character(motcomData_long$variable))
+
+# Prior distributions
+modelpriors <- c(set_prior("normal(0, 2)", class = "b"),
+                 set_prior("normal(4, 1.5)", class = "Intercept", lb=0))
+
+# Model fitting
+mod3_1_r <- brm(motCommitment ~ 1 + cs(treatment) + (1 | ID_person) + (1 | item),
+              data = motcomData_long, 
+              family = acat("probit"),
+              prior = modelpriors,
+              sample_prior = "yes")
+
+# Parameter estimation
+summary(mod3_1_r)
+
+# Model comparison to initial analysis
+bayes_factor(mod3_1, mod2_r)
+
+#### Hypothesis 3-2: Affective Goal Commitment ####
+
+affcomData <- cbind(preregDat[, 45:47], treatment=preregDat$treatment, ID_person=seq(1, nrow(preregDat)))
+affcomData_long <-  reshape2::melt(affcomData, id.vars = c("ID_person", "treatment"))
+colnames(affcomData_long)[4] <- c("affCommitment")
+affcomData_long$treatment <- factor(affcomData_long$treatment, levels = c("control", "impInt", "mentCont", "combiTreat"))
+affcomData_long$item <- parse_number(as.character(affcomData_long$variable))
+
+# Prior distributions
+modelpriors <- c(set_prior("normal(0, 2)", class = "b"),
+                 set_prior("normal(4, 1.5)", class = "Intercept", lb=0))
+
+# Model fitting
+mod3_2_r <- brm(affCommitment ~ 1 + cs(treatment) + (1 | ID_person) + (1 | item),
+                data = affcomData_long, 
+                family = acat("probit"),
+                prior = modelpriors,
+                sample_prior = "yes")
+
+# Parameter estimation
+summary(mod3_2_r)
+
+# Model comparison to initial analysis
+bayes_factor(mod3_2, mod3_2_r)
+
+#### Hypothesis 4: Energization ####
+
+energyData <- cbind(preregDat[, 37:41], treatment=preregDat$treatment, ID_person=seq(1, nrow(preregDat)))
+energyData_long <-  reshape2::melt(energyData, id.vars = c("ID_person", "treatment"))
+colnames(energyData_long)[4] <- c("energization")
+energyData_long$treatment <- factor(energyData_long$treatment, levels = c("control", "impInt", "mentCont", "combiTreat"))
+energyData_long$item <- parse_number(as.character(energyData_long$variable))
+
+# Prior distributions
+modelpriors <- c(set_prior("normal(0, 2)", class = "b"),
+                 set_prior("normal(4, 1.5)", class = "Intercept", lb=0))
+
+# Model fitting
+mod4_r <- brm(energization ~ 1 + cs(treatment) + (1 | ID_person) + (1 | item),
+                data = energyData_long, 
+                family = acat("probit"),
+                prior = modelpriors,
+                sample_prior = "yes")
+
+# Parameter estimation
+summary(mod4_r)
+
+# Model comparison to initial analysis
+bayes_factor(mod4, mod4_r)
 

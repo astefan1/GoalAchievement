@@ -1,5 +1,5 @@
 # ==============================================================================
-# DESIGN ANALYSIS FOR ANCOVA MODEL (HYPOTHESIS 3)
+# DESIGN ANALYSIS FOR ANOVA MODEL (HYPOTHESIS 3_2)
 # ==============================================================================
 
 #### Load functions & packages ####

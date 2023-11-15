@@ -2,7 +2,7 @@
 
 ## Design analysis
 
-### H1
+### H1 (physical activity)
 
 * Run the script 'design_analysis_H1.R'. This file makes use of functions from two other scripts:
     * 'generateData_ANCOVA_H1.R' defines a function to generate many datasets from an ANCOVA model (for H1, where Implementation Intentions and Mental Contrasting have the same assumed effect size)
@@ -10,7 +10,7 @@
 
 * Run the script 'resultsDA_ANCOVA.R' to summarize design analysis results across multiple sample sizes. This script makes use of functions from the script 'analyzeDA_H1.R'
 
-### H2
+### H2 (automaticity)
 
 * Run the script 'design_analysis_H2.R'. This file makes use of functions from five other scripts and contains the entire design analysis for H2, including plots and tables for all conditions:
     * "generateData_ANCOVA_H1.R"
@@ -19,14 +19,22 @@
     * "analyzeDA_H1.R"
     * "analyzeDA_H2.R"
     
-### H3
+### H3-1 (motivational goal commitment)
 
-* Run the script 'design_analysis_H3.R'. This file makes use of functions from three other scripts and contains the entire design analysis for H2, including plots and tables for all conditions:
+* Run the script 'design_analysis_H3-1.R'. This file makes use of functions from four other scripts and contains the entire design analysis for H2, including plots and tables for all conditions:
+    * "generateData_ANCOVA_H1.R"
+    * "generateData_ANCOVA_H2.R"
+    * "conductDA_ANCOVA.R"
+    * "analyzeDA_H3H4.R"
+
+### H3-2 (affective goal commitment)
+
+* Run the script 'design_analysis_H3-2.R'. This file makes use of functions from three other scripts and contains the entire design analysis for H2, including plots and tables for all conditions:
     * "generateData_ANOVA.R"
  .  * "conductDA_ANOVA.R"
     * "analyzeDA_H3H4.R"
 
-### H4
+### H4 (energization)
 
 * Run the script 'design_analysis_H4.R'. This file makes use of functions from three other scripts and contains the entire design analysis for H2, including plots and tables for all conditions:
     * "generateData_ANOVA.R"

@@ -12,7 +12,6 @@ source("conductDA_ANCOVA.R")
 source("analyzeDA_H1.R")
 source("analyzeDA_H2.R")
 
-
 ################## H0, retest reliability: 0.75, N = 500 #######################
 
 set.seed(1234)
