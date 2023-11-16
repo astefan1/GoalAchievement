@@ -110,13 +110,15 @@ mod1 <- brm(follow_physAct ~ baseline_physAct_centered + treatment,
             data = datscores, 
             family = "gaussian",
             prior = modelpriors,
-            sample_prior = "yes")
+            sample_prior = "yes",
+            save_pars = save_pars(all = TRUE))
 
 mod1_2 <- brm(follow_physAct ~ baseline_physAct_centered * treatment, 
             data = datscores, 
             family = "gaussian",
             prior = modelpriors,
-            sample_prior = "yes")
+            sample_prior = "yes",
+            save_pars = save_pars(all = TRUE))
 
 # Test whether the assumption of parallel slopes, i.e., no interaction between
 # pretest scores and treatment effectiveness. If the interaction model explains
@@ -147,6 +149,9 @@ if(H1c$hypothesis$Evid.Ratio < 1/6) H1c_postprob <- hypothesis(mod1, "treatmentc
 if(H1e$hypothesis$Evid.Ratio < 1/6) H1f_postprob <- hypothesis(mod1, "treatmentmentCont > 0")
 if(H1f$hypothesis$Evid.Ratio < 1/6) H1f_postprob <- hypothesis(mod1, "treatmentimpInt > 0")
 
+# Effect size
+bayes_R2(mod1)
+
 ############ H2: Hypothesis testing and parameter estimation ###################
 
 # Data preparation
@@ -162,13 +167,15 @@ mod2 <- brm(follow_automaticity ~ baseline_automaticity_centered + treatment,
             data = datscores, 
             family = "gaussian",
             prior = modelpriors,
-            sample_prior = "yes")
+            sample_prior = "yes",
+            save_pars = save_pars(all = TRUE))
 
 mod2_2 <- brm(follow_automaticity ~ baseline_automaticity_centered + treatment, 
             data = datscores, 
             family = "gaussian",
             prior = modelpriors,
-            sample_prior = "yes")
+            sample_prior = "yes",
+            save_pars = save_pars(all = TRUE))
 
 # Test whether the assumption of parallel slopes, i.e., no interaction between
 # pretest scores and treatment effectiveness. If the interaction model explains
@@ -198,6 +205,9 @@ if(H2c$hypothesis$Evid.Ratio < 1/6) H2c_postprob <- hypothesis(mod2, "treatmentc
 if(H2d$hypothesis$Evid.Ratio < 1/6) H2d_postprob <- hypothesis(mod2, "treatmentimpInt - treatmentmentCont > 0")
 if(H2f$hypothesis$Evid.Ratio < 1/6) H2f_postprob <- hypothesis(mod2, "treatmentimpInt > 0")
 
+# Effect size
+bayes_R2(mod2)
+
 ############ H3: Hypothesis testing and parameter estimation ###################
 
 #### H3_1: Motivational Goal Commitment ####
@@ -215,13 +225,15 @@ mod3_1 <- brm(post_commitment ~ baseline_sociocog_intStrength_centered + treatme
               data = datscores, 
               family = "gaussian",
               prior = modelpriors,
-              sample_prior = "yes")
+              sample_prior = "yes",
+              save_pars = save_pars(all = TRUE))
 
 mod3_1_2 <- brm(post_commitment ~ baseline_sociocog_intStrength_centered * treatment,
               data = datscores, 
               family = "gaussian",
               prior = modelpriors,
-              sample_prior = "yes")
+              sample_prior = "yes",
+              save_pars = save_pars(all = TRUE))
 
 # Test whether the assumption of parallel slopes, i.e., no interaction between
 # pretest scores and treatment effectiveness. If the interaction model explains
@@ -251,6 +263,9 @@ if(H31c$hypothesis$Evid.Ratio < 1/6) H32c_postprob <- hypothesis(mod3_1, "treatm
 if(H31d$hypothesis$Evid.Ratio < 1/6) H32d_postprob <- hypothesis(mod3_1, "treatmentimpInt - treatmentmentCont < 0")
 if(H31e$hypothesis$Evid.Ratio < 1/6) H32e_postprob <- hypothesis(mod3_1, "treatmentmentCont > 0")
 
+# Effect size
+bayes_R2(mod3_1)
+
 #### H3_2: Affective Goal Commitment ####
 
 # Model fitting
@@ -258,7 +273,8 @@ mod3_2 <- brm(post_affcommitment ~ treatment,
               data = datscores, 
               family = "gaussian",
               prior = modelpriors,
-              sample_prior = "yes")
+              sample_prior = "yes",
+              save_pars = save_pars(all = TRUE))
 
 # Parameter estimation
 summary(mod3_2)
@@ -277,6 +293,9 @@ if(H32c$hypothesis$Evid.Ratio < 1/6) H32c_postprob <- hypothesis(mod3_2, "treatm
 if(H32d$hypothesis$Evid.Ratio < 1/6) H32d_postprob <- hypothesis(mod3_2, "treatmentimpInt - treatmentmentCont < 0")
 if(H32e$hypothesis$Evid.Ratio < 1/6) H32e_postprob <- hypothesis(mod3_2, "treatmentmentCont > 0")
 
+# Effect size
+bayes_R2(mod3_2)
+
 ############ H4: Hypothesis testing and parameter estimation ###################
 
 # Prior distributions
@@ -289,7 +308,8 @@ mod4 <- brm(post_energization ~ treatment,
             data = datscores, 
             family = "gaussian",
             prior = modelpriors,
-            sample_prior = "yes")
+            sample_prior = "yes",
+            save_pars = save_pars(all = TRUE))
 
 # Parameter estimation
 summary(mod4)
@@ -307,6 +327,9 @@ if(H4b$hypothesis$Evid.Ratio < 1/6) H4b_postprob <- hypothesis(mod4, "treatmentc
 if(H4c$hypothesis$Evid.Ratio < 1/6) H4c_postprob <- hypothesis(mod4, "treatmentcombiTreat > 0")
 if(H4d$hypothesis$Evid.Ratio < 1/6) H4d_postprob <- hypothesis(mod4, "treatmentimpInt - treatmentmentCont > 0")
 if(H4e$hypothesis$Evid.Ratio < 1/6) H4e_postprob <- hypothesis(mod4, "treatmentmentCont > 0")
+
+# Effect size
+bayes_R2(mod4)
 
 ################# Exploratory Moderation Hypotheses ############################
 
@@ -343,6 +366,9 @@ H_att1 <- hypothesis(modexp_att, "treatmentimpInt:baseline_sociocog_att_centered
 H_att2 <- hypothesis(modexp_att, "treatmentmentCont:baseline_sociocog_att_centered = 0")
 H_att3 <- hypothesis(modexp_att, "treatmentcombiTreat:baseline_sociocog_att_centered  = 0")
 
+# Effect size
+bayes_R2(modexp_att)
+
 #### Strength of intention at baseline ####
 
 # Model fitting
@@ -359,6 +385,9 @@ summary(modexp_intStrength)
 H_intStrength1 <- hypothesis(modexp_intStrength, "treatmentimpInt:baseline_sociocog_intStrength_centered = 0")
 H_intStrength2 <- hypothesis(modexp_intStrength, "treatmentmentCont:baseline_sociocog_intStrength_centered = 0")
 H_intStrength3 <- hypothesis(modexp_intStrength, "treatmentcombiTreat:baseline_sociocog_intStrength_centered  = 0")
+
+# Effect size
+bayes_R2(modexp_intStrength)
 
 #### Subjective norms at baseline ####
 
@@ -377,6 +406,9 @@ H_subjnorm1 <- hypothesis(modexp_subjnorm, "treatmentimpInt:baseline_sociocog_su
 H_subjnorm2 <- hypothesis(modexp_subjnorm, "treatmentmentCont:baseline_sociocog_subjnorm_centered = 0")
 H_subjnorm3 <- hypothesis(modexp_subjnorm, "treatmentcombiTreat:baseline_sociocog_subjnorm_centered  = 0")
 
+# Effect size
+bayes_R2(modexp_subjnorm)
+
 #### Behavioral control at baseline ####
 
 # Model fitting
@@ -393,6 +425,9 @@ summary(modexp_behControl)
 H_behControl1 <- hypothesis(modexp_behControl, "treatmentimpInt:baseline_sociocog_behControl_centered = 0")
 H_behControl2 <- hypothesis(modexp_behControl, "treatmentmentCont:baseline_sociocog_behControl_centered = 0")
 H_behControl3 <- hypothesis(modexp_behControl, "treatmentcombiTreat:baseline_sociocog_behControl_centered  = 0")
+
+# Effect size
+bayes_R2(modexp_behControl)
 
 #### Amotivation at baseline ####
 
@@ -411,6 +446,9 @@ H_amot1 <- hypothesis(modexp_amot, "treatmentimpInt:baseline_selfdet_amot_center
 H_amot2 <- hypothesis(modexp_amot, "treatmentmentCont:baseline_selfdet_amot_centered = 0")
 H_amot3 <- hypothesis(modexp_amot, "treatmentcombiTreat:baseline_selfdet_amot_centered  = 0")
 
+# Effect size
+bayes_R2(modexp_amot)
+
 #### External Regulation at baseline ####
 
 # Model fitting
@@ -427,6 +465,9 @@ summary(modexp_extReg)
 H_extReg1 <- hypothesis(modexp_extReg, "treatmentimpInt:baseline_selfdet_extReg_centered = 0")
 H_extReg2 <- hypothesis(modexp_extReg, "treatmentmentCont:baseline_selfdet_extReg_centered = 0")
 H_extReg3 <- hypothesis(modexp_extReg, "treatmentcombiTreat:baseline_selfdet_extReg_centered  = 0")
+
+# Effect size
+bayes_R2(modexp_extReg)
 
 #### Identified Regulation at baseline ####
 
@@ -445,6 +486,9 @@ H_idReg1 <- hypothesis(modexp_idReg, "treatmentimpInt:baseline_selfdet_idReg_cen
 H_idReg2 <- hypothesis(modexp_idReg, "treatmentmentCont:baseline_selfdet_idReg_centered = 0")
 H_idReg3 <- hypothesis(modexp_idReg, "treatmentcombiTreat:baseline_selfdet_idReg_centered  = 0")
 
+# Effect size
+bayes_R2(modexp_idReg)
+
 #### Integrated Regulation ####
 
 # Model fitting
@@ -461,6 +505,9 @@ summary(modexp_intReg)
 H_intReg1 <- hypothesis(modexp_idReg, "treatmentimpInt:baseline_selfdet_intReg_centered = 0")
 H_intReg2 <- hypothesis(modexp_idReg, "treatmentmentCont:baseline_selfdet_intReg_centered = 0")
 H_intReg3 <- hypothesis(modexp_idReg, "treatmentcombiTreat:baseline_selfdet_intReg_centered  = 0")
+
+# Effect size
+bayes_R2(modexp_intReg)
 
 #### Intrinsic Motivation at baseline ####
 
@@ -479,6 +526,9 @@ H_intMot1 <- hypothesis(modexp_intMot, "treatmentimpInt:baseline_selfdet_intMot_
 H_intMot2 <- hypothesis(modexp_intMot, "treatmentmentCont:baseline_selfdet_intMot_centered = 0")
 H_intMot3 <- hypothesis(modexp_intMot, "treatmentcombiTreat:baseline_selfdet_intMot_centered  = 0")
 
+# Effect size
+bayes_R2(modexp_intMot)
+
 #### Introjection at baseline ####
 
 # Model fitting
@@ -496,6 +546,9 @@ H_intro1 <- hypothesis(modexp_intro, "treatmentimpInt:baseline_selfdet_intro_cen
 H_intro2 <- hypothesis(modexp_intro, "treatmentmentCont:baseline_selfdet_intro_centered = 0")
 H_intro3 <- hypothesis(modexp_intro, "treatmentcombiTreat:baseline_selfdet_intro_centered  = 0")
 
+# Effect size
+bayes_R2(modexp_intro)
+
 ################# Exploratory Mediation Hypotheses #############################
 
 # Use default prior distributions in brms
@@ -509,6 +562,9 @@ med1 <- brm(f1+f2+set_rescor(FALSE), data = datscores)
 
 mediation(med1)
 
+# Effect size
+bayes_R2(med1)
+
 #### treatment -> motivational commitment -> physical activity ####
 
 f1 <- bf(post_commitment ~ baseline_physAct_centered + baseline_sociocog_intStrength_centered + treatment)
@@ -516,6 +572,9 @@ f2 <- bf(follow_physAct ~ baseline_physAct_centered + baseline_sociocog_intStren
 med2 <- brm(f1+f2+set_rescor(FALSE), data = datscores)
 
 mediation(med2)
+
+# Effect size
+bayes_R2(med2)
 
 #### treatment -> energization -> physical activity ####
 
@@ -525,6 +584,9 @@ med3 <- brm(f1+f2+set_rescor(FALSE), data = datscores)
 
 mediation(med3)
 
+# Effect size
+bayes_R2(med3)
+
 #### treatment -> experienced automaticity -> physical activity ####
 
 f1 <- bf(follow_automaticity ~ baseline_physAct_centered + baseline_automaticity_centered + treatment)
@@ -532,6 +594,9 @@ f2 <- bf(follow_physAct ~ baseline_physAct_centered + baseline_automaticity_cent
 med4 <- brm(f1+f2+set_rescor(FALSE), data = datscores)
 
 mediation(med4)
+
+# Effect size
+bayes_R2(med4)
 
 ############## Robustness Checks: Discrete Regression Models ###################
 
@@ -546,13 +611,17 @@ mod1_r <- brm(follow_physAct ~ baseline_physAct + treatment,
               data = datscores, 
               family = "poisson",
               prior = modelpriors,
-              sample_prior = "yes")
+              sample_prior = "yes",
+              save_pars = save_pars(all = TRUE))
 
 # Parameter estimation
 summary(mod1_r)
 
 # Model comparison to initial analysis
 bayes_factor(mod1, mod1_r)
+
+# Effect size
+bayes_R2(mod1_r)
 
 #### Hypothesis 2: Automaticity ####
 
@@ -574,13 +643,17 @@ mod2_r <- brm(automaticity ~ 1 + cs(time*treatment) + (1 | ID_person) + (1 | ite
               data = autoData_long, 
               family = acat("probit"),
               prior = modelpriors,
-              sample_prior = "yes")
+              sample_prior = "yes",
+              save_pars = save_pars(all = TRUE))
 
 # Parameter estimation
 summary(mod2_r)
 
 # Model comparison to initial analysis
 bayes_factor(mod2, mod2_r)
+
+# Effect size
+bayes_R2(mod2_r)
 
 #### Hypothesis 3-1: Motivational Goal Commitment ####
 
@@ -602,13 +675,17 @@ mod3_1_r <- brm(motCommitment ~ 1 + cs(treatment) + (1 | ID_person) + (1 | item)
               data = motcomData_long, 
               family = acat("probit"),
               prior = modelpriors,
-              sample_prior = "yes")
+              sample_prior = "yes",
+              save_pars = save_pars(all = TRUE))
 
 # Parameter estimation
 summary(mod3_1_r)
 
 # Model comparison to initial analysis
 bayes_factor(mod3_1, mod2_r)
+
+# Effect size
+bayes_R2(mod3_1_r)
 
 #### Hypothesis 3-2: Affective Goal Commitment ####
 
@@ -627,13 +704,17 @@ mod3_2_r <- brm(affCommitment ~ 1 + cs(treatment) + (1 | ID_person) + (1 | item)
                 data = affcomData_long, 
                 family = acat("probit"),
                 prior = modelpriors,
-                sample_prior = "yes")
+                sample_prior = "yes",
+                save_pars = save_pars(all = TRUE))
 
 # Parameter estimation
 summary(mod3_2_r)
 
 # Model comparison to initial analysis
 bayes_factor(mod3_2, mod3_2_r)
+
+# Effect size
+bayes_R2(mod3_2_r)
 
 #### Hypothesis 4: Energization ####
 
@@ -649,14 +730,18 @@ modelpriors <- c(set_prior("normal(0, 2)", class = "b"),
 
 # Model fitting
 mod4_r <- brm(energization ~ 1 + cs(treatment) + (1 | ID_person) + (1 | item),
-                data = energyData_long, 
-                family = acat("probit"),
-                prior = modelpriors,
-                sample_prior = "yes")
+              data = energyData_long, 
+              family = acat("probit"),
+              prior = modelpriors,
+              sample_prior = "yes",
+              save_pars = save_pars(all = TRUE))
 
 # Parameter estimation
 summary(mod4_r)
 
 # Model comparison to initial analysis
 bayes_factor(mod4, mod4_r)
+
+# Effect size
+bayes_R2(mod4_r)
 
