@@ -633,15 +633,10 @@ colnames(autoData_long)[4] <- c("automaticity")
 autoData_long$treatment <- factor(autoData_long$treatment, levels = c("control", "impInt", "mentCont", "combiTreat"))
 autoData_long$item <- parse_number(as.character(autoData_long$variable))
 
-# Prior distributions
-modelpriors <- c(set_prior("normal(0, 1.5)", class = "b"),
-                 set_prior("normal(2.3, 1)", class = "Intercept", lb=0))
-
 # Model fitting
-mod2_r <- brm(automaticity ~ 1 + cs(time*treatment) + (1 | ID_person) + (1 | item),
+mod2_r <- brm(automaticity ~ 1 + time*treatment + (1 | ID_person) + (1 | item),
               data = autoData_long, 
-              family = acat("probit"),
-              prior = modelpriors,
+              family = cumulative("probit"),
               sample_prior = "yes",
               save_pars = save_pars(all = TRUE))
 
@@ -664,15 +659,10 @@ colnames(motcomData_long)[4] <- c("motCommitment")
 motcomData_long$treatment <- factor(motcomData_long$treatment, levels = c("control", "impInt", "mentCont", "combiTreat"))
 motcomData_long$item <- parse_number(as.character(motcomData_long$variable))
 
-# Prior distributions
-modelpriors <- c(set_prior("normal(0, 2)", class = "b"),
-                 set_prior("normal(4, 1.5)", class = "Intercept", lb=0))
-
 # Model fitting
-mod3_1_r <- brm(motCommitment ~ 1 + cs(treatment) + (1 | ID_person) + (1 | item),
+mod3_1_r <- brm(motCommitment ~ 1 + time*treatment + (1 | ID_person) + (1 | item),
                 data = motcomData_long, 
-                family = acat("probit"),
-                prior = modelpriors,
+                family = cumulative("probit"),
                 sample_prior = "yes",
                 save_pars = save_pars(all = TRUE))
 
@@ -693,15 +683,10 @@ colnames(affcomData_long)[4] <- c("affCommitment")
 affcomData_long$treatment <- factor(affcomData_long$treatment, levels = c("control", "impInt", "mentCont", "combiTreat"))
 affcomData_long$item <- parse_number(as.character(affcomData_long$variable))
 
-# Prior distributions
-modelpriors <- c(set_prior("normal(0, 2)", class = "b"),
-                 set_prior("normal(4, 1.5)", class = "Intercept", lb=0))
-
 # Model fitting
-mod3_2_r <- brm(affCommitment ~ 1 + cs(treatment) + (1 | ID_person) + (1 | item),
-                data = affcomData_long, 
-                family = acat("probit"),
-                prior = modelpriors,
+mod3_2_r <- brm(affCommitment ~ 1 + treatment + (1 | ID_person) + (1 | item),
+                data = affcomData_long,
+                family = cumulative("probit"),
                 sample_prior = "yes",
                 save_pars = save_pars(all = TRUE))
 
@@ -722,14 +707,10 @@ colnames(energyData_long)[4] <- c("energization")
 energyData_long$treatment <- factor(energyData_long$treatment, levels = c("control", "impInt", "mentCont", "combiTreat"))
 energyData_long$item <- parse_number(as.character(energyData_long$variable))
 
-# Prior distributions
-modelpriors <- c(set_prior("normal(0, 2)", class = "b"),
-                 set_prior("normal(4, 1.5)", class = "Intercept", lb=0))
 # Model fitting
-mod4_r <- brm(energization ~ 1 + cs(treatment) + (1 | ID_person) + (1 | item),
-              data = energyData_long, 
-              family = acat("probit"),
-              prior = modelpriors,
+mod4_r <- brm(energization ~ 1 + treatment + (1 | ID_person) + (1 | item),
+              data = energyData_long,
+              family = cumulative("probit"),
               sample_prior = "yes",
               save_pars = save_pars(all = TRUE))
 
