@@ -155,7 +155,7 @@ ggplot(priorPred_long, aes(x = Var2, y = value)) +
 #### H4: Prior Distributions ####
 
 par(mfrow=c(3,1))
-curve(dtruncnorm(x, a = 0, b = Inf, mean=4.3, sd=1.5), xlim=c(-1, 10), xlab="Intercept", n = 1000, ylab="", main="Prior Distributions", yaxt="n", cex.lab=2, cex.axis=2, cex.main=2)
+curve(dtruncnorm(x, a = 0, b = Inf, mean=4, sd=1.5), xlim=c(-1, 10), xlab="Intercept", n = 1000, ylab="", main="Prior Distributions", yaxt="n", cex.lab=2, cex.axis=2, cex.main=2)
 mtext("Density", side=2, line = 2, cex=1.5)
 curve(dnorm(x, mean=0, sd=2), xlim=c(-5, 5), xlab="Regression Coefficients", ylab="", yaxt="n", cex.lab=2, cex.axis=2, cex.main=2)
 mtext("Density", side=2, line = 2, cex=1.5)
@@ -169,7 +169,7 @@ dat <- simANOVA(iter=1, N = 350, meanControl = 4.3, sdWithinGroup = 1.5, effimpI
 
 # Set model priors
 modelpriors <- c(set_prior("normal(0, 2)", class = "b"),
-                 set_prior("normal(4.3, 1.5)", class = "Intercept", lb=0),
+                 set_prior("normal(4, 1.5)", class = "Intercept", lb=0),
                  set_prior("student_t(3, 0, 0.5)", class = "sigma"))
 
 # Generate draws from prior distributions

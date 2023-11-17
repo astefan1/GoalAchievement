@@ -250,6 +250,18 @@ save(res_H1_rr60_H2_N500, file = "./generated_data/res_H1_rr60_H2_N500.RData")
 BFtable_H2(res_H1_rr60_H2_N500)
 postprobcat_H2(res_H1_rr60_H2_N500)
 
+analyze_DA_postMeans(DA_H1_rr60_N500_H2, 
+                     trueIntercept=2, 
+                     trueRR = 0.60,
+                     trueImpIntEffect=0.3,
+                     trueMentContEffect=0,
+                     trueCombiEffect=0.3, 
+                     xlimIntercept=c(1,3), 
+                     xlimBeta=c(-1, 1), 
+                     xlimBeta1=c(0.5,0.8), 
+                     xlimSigma=c(0.6,0.8))
+mtext("H1, r = .60, N = 500", side=3, outer=TRUE, cex = 2, line = 1.7)
+
 ################## H1, retest reliability: 0.60, N = 600 #######################
 
 set.seed(1234)
@@ -273,3 +285,15 @@ save(res_H1_rr60_H2_N600, file = "./generated_data/res_H1_rr60_H2_N600.RData")
 
 BFtable_H2(res_H1_rr60_H2_N600)
 postprobcat_H2(res_H1_rr60_H2_N600)
+
+analyze_DA_postMeans(DA_H1_rr60_N600_H2, 
+                     trueIntercept=2, 
+                     trueRR = 0.60,
+                     trueImpIntEffect=0.3,
+                     trueMentContEffect=0,
+                     trueCombiEffect=0.3, 
+                     xlimIntercept=c(1,3), 
+                     xlimBeta=c(-1, 1), 
+                     xlimBeta1=c(0.5,0.8), 
+                     xlimSigma=c(0.6,0.8))
+mtext("H1, r = .60, N = 600", side=3, outer=TRUE, cex = 2, line = 1.7)

@@ -35,25 +35,25 @@ mult_bf_equality(x = ss_per_group, a = rep(1, 4))
 
 datscores <- data.frame(matrix(NA, nrow=660, ncol=0))
 datscores$baseline_physAct <- preregDat[, 1]
-datscores$baseline_automaticity <- rowMeans(preregDat[, 2:5])
-datscores$baseline_selfdet_amot <- rowMeans(preregDat[, 6:8])
-datscores$baseline_selfdet_extReg <- rowMeans(preregDat[, 9:11])
-datscores$baseline_selfdet_intro <- rowMeans(preregDat[, 12:14])
-datscores$baseline_selfdet_idReg <- rowMeans(preregDat[, 15:17])
-datscores$baseline_selfdet_intReg <- rowMeans(preregDat[, 18:20])
-datscores$baseline_selfdet_intMot <- rowMeans(preregDat[, 21:23])
-datscores$baseline_sociocog_att <- rowMeans(preregDat[, 24:28])
+datscores$baseline_automaticity <- rowMeans(preregDat[, 2:5], na.rm = TRUE)
+datscores$baseline_selfdet_amot <- rowMeans(preregDat[, 6:8], na.rm = TRUE)
+datscores$baseline_selfdet_extReg <- rowMeans(preregDat[, 9:11], na.rm = TRUE)
+datscores$baseline_selfdet_intro <- rowMeans(preregDat[, 12:14], na.rm = TRUE)
+datscores$baseline_selfdet_idReg <- rowMeans(preregDat[, 15:17], na.rm = TRUE)
+datscores$baseline_selfdet_intReg <- rowMeans(preregDat[, 18:20], na.rm = TRUE)
+datscores$baseline_selfdet_intMot <- rowMeans(preregDat[, 21:23], na.rm = TRUE)
+datscores$baseline_sociocog_att <- rowMeans(preregDat[, 24:28], na.rm = TRUE)
 datscores$baseline_sociocog_subjnorm <- preregDat[, 29]
-datscores$baseline_sociocog_behControl <- rowMeans(preregDat[, 30:32])
-datscores$baseline_sociocog_intStrength <- rowMeans(preregDat[, 33:35])
+datscores$baseline_sociocog_behControl <- rowMeans(preregDat[, 30:32], na.rm = TRUE)
+datscores$baseline_sociocog_intStrength <- rowMeans(preregDat[, 33:35], na.rm = TRUE)
 datscores$treatment <- preregDat[, 36]
-datscores$post_energization <- rowMeans(preregDat[, 37:41])
-datscores$post_commitment <- rowMeans(preregDat[, 42:44])
-datscores$post_affcommitment <- rowMeans(preregDat[, 45:47])
+datscores$post_energization <- rowMeans(preregDat[, 37:41], na.rm = TRUE)
+datscores$post_commitment <- rowMeans(preregDat[, 42:44], na.rm = TRUE)
+datscores$post_affcommitment <- rowMeans(preregDat[, 45:47], na.rm = TRUE)
 datscores$gender <- preregDat[, 48]
 datscores$age <- preregDat[,49]
 datscores$follow_physAct <- preregDat[,52]
-datscores$follow_automaticity <- rowMeans(preregDat[, 53:56])
+datscores$follow_automaticity <- rowMeans(preregDat[, 53:56], na.rm = TRUE)
 
 ####### Compute McDonalds Omega for all scales consisting of multiple items ####
 
@@ -626,7 +626,6 @@ bayes_R2(mod1_r)
 #### Hypothesis 2: Automaticity ####
 
 # Data preparation
-
 autoData <- cbind(preregDat[, 2:5], preregDat[, 53:56], treatment=preregDat$treatment, ID_person=seq(1, nrow(preregDat)))
 autoData_long <-  reshape2::melt(autoData, id.vars = c("ID_person", "treatment"))
 autoData_long$time <- as.numeric(grepl("follow", autoData_long$variable))
@@ -658,7 +657,6 @@ bayes_R2(mod2_r)
 #### Hypothesis 3-1: Motivational Goal Commitment ####
 
 # Data preparation
-
 motcomData <- cbind(preregDat[, 33:35], preregDat[, 42:44], treatment=preregDat$treatment, ID_person=seq(1, nrow(preregDat)))
 motcomData_long <-  reshape2::melt(motcomData, id.vars = c("ID_person", "treatment"))
 motcomData_long$time <- as.numeric(grepl("follow", motcomData_long$variable))
@@ -672,11 +670,11 @@ modelpriors <- c(set_prior("normal(0, 2)", class = "b"),
 
 # Model fitting
 mod3_1_r <- brm(motCommitment ~ 1 + cs(treatment) + (1 | ID_person) + (1 | item),
-              data = motcomData_long, 
-              family = acat("probit"),
-              prior = modelpriors,
-              sample_prior = "yes",
-              save_pars = save_pars(all = TRUE))
+                data = motcomData_long, 
+                family = acat("probit"),
+                prior = modelpriors,
+                sample_prior = "yes",
+                save_pars = save_pars(all = TRUE))
 
 # Parameter estimation
 summary(mod3_1_r)
@@ -727,7 +725,6 @@ energyData_long$item <- parse_number(as.character(energyData_long$variable))
 # Prior distributions
 modelpriors <- c(set_prior("normal(0, 2)", class = "b"),
                  set_prior("normal(4, 1.5)", class = "Intercept", lb=0))
-
 # Model fitting
 mod4_r <- brm(energization ~ 1 + cs(treatment) + (1 | ID_person) + (1 | item),
               data = energyData_long, 
@@ -744,4 +741,3 @@ bayes_factor(mod4, mod4_r)
 
 # Effect size
 bayes_R2(mod4_r)
-
