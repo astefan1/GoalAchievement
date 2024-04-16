@@ -301,11 +301,6 @@ datscores$baseline_sociocog_att_centered <- datscores$baseline_sociocog_att-mean
 datscores$baseline_sociocog_behControl_centered <- datscores$baseline_sociocog_behControl-mean(datscores$baseline_sociocog_behControl)
 datscores$baseline_sociocog_intStrength_centered <- datscores$baseline_sociocog_intStrength-mean(datscores$baseline_sociocog_intStrength)
 datscores$baseline_sociocog_subjnorm_centered <- datscores$baseline_sociocog_subjnorm-mean(datscores$baseline_sociocog_subjnorm)
-datscores$baseline_selfdet_amot_centered <- datscores$baseline_selfdet_amot-mean(datscores$baseline_selfdet_amot) 
-datscores$baseline_selfdet_extReg_centered <- datscores$baseline_selfdet_extReg-mean(datscores$baseline_selfdet_extReg)
-datscores$baseline_selfdet_idReg_centered <- datscores$baseline_selfdet_idReg-mean(datscores$baseline_selfdet_idReg)
-datscores$baseline_selfdet_intMot_centered <- datscores$baseline_selfdet_intMot-mean(datscores$baseline_selfdet_intMot)
-datscores$baseline_selfdet_intro_centered <- datscores$baseline_selfdet_intro-mean(datscores$baseline_selfdet_intro)
 
 # Prior distributions
 modelpriors <- c(set_prior("normal(0, 10)", class = "b"),
@@ -391,126 +386,6 @@ H_behControl3 <- hypothesis(modexp_behControl, "treatmentcombiTreat:baseline_soc
 
 # Effect size
 bayes_R2(modexp_behControl)
-
-#### Amotivation at baseline ####
-
-# Model fitting
-modexp_amot <- brm(follow_physAct ~ baseline_physAct_centered + treatment*baseline_selfdet_amot_centered,
-                   data = datscores, 
-                   family = "gaussian",
-                   prior = modelpriors,
-                   sample_prior = "yes") 
-
-# Parameter estimation
-summary(modexp_amot)
-
-# Hypothesis testing
-H_amot1 <- hypothesis(modexp_amot, "treatmentimpInt:baseline_selfdet_amot_centered = 0")
-H_amot2 <- hypothesis(modexp_amot, "treatmentmentCont:baseline_selfdet_amot_centered = 0")
-H_amot3 <- hypothesis(modexp_amot, "treatmentcombiTreat:baseline_selfdet_amot_centered  = 0")
-
-# Effect size
-bayes_R2(modexp_amot)
-
-#### External Regulation at baseline ####
-
-# Model fitting
-modexp_extReg <- brm(follow_physAct ~ baseline_physAct_centered + treatment*baseline_selfdet_extReg_centered,
-                     data = datscores, 
-                     family = "gaussian",
-                     prior = modelpriors,
-                     sample_prior = "yes") 
-
-# Parameter estimation
-summary(modexp_extReg)
-
-# Hypothesis testing
-H_extReg1 <- hypothesis(modexp_extReg, "treatmentimpInt:baseline_selfdet_extReg_centered = 0")
-H_extReg2 <- hypothesis(modexp_extReg, "treatmentmentCont:baseline_selfdet_extReg_centered = 0")
-H_extReg3 <- hypothesis(modexp_extReg, "treatmentcombiTreat:baseline_selfdet_extReg_centered  = 0")
-
-# Effect size
-bayes_R2(modexp_extReg)
-
-#### Identified Regulation at baseline ####
-
-# Model fitting
-modexp_idReg <- brm(follow_physAct ~ baseline_physAct_centered + treatment*baseline_selfdet_idReg_centered,
-                    data = datscores, 
-                    family = "gaussian",
-                    prior = modelpriors,
-                    sample_prior = "yes") 
-
-# Parameter estimation
-summary(modexp_idReg)
-
-# Hypothesis testing
-H_idReg1 <- hypothesis(modexp_idReg, "treatmentimpInt:baseline_selfdet_idReg_centered = 0")
-H_idReg2 <- hypothesis(modexp_idReg, "treatmentmentCont:baseline_selfdet_idReg_centered = 0")
-H_idReg3 <- hypothesis(modexp_idReg, "treatmentcombiTreat:baseline_selfdet_idReg_centered  = 0")
-
-# Effect size
-bayes_R2(modexp_idReg)
-
-#### Integrated Regulation ####
-
-# Model fitting
-modexp_intReg <- brm(follow_physAct ~ baseline_physAct_centered + treatment*baseline_selfdet_intReg_centered,
-                    data = datscores, 
-                    family = "gaussian",
-                    prior = modelpriors,
-                    sample_prior = "yes") 
-
-# Parameter estimation
-summary(modexp_intReg)
-
-# Hypothesis testing
-H_intReg1 <- hypothesis(modexp_idReg, "treatmentimpInt:baseline_selfdet_intReg_centered = 0")
-H_intReg2 <- hypothesis(modexp_idReg, "treatmentmentCont:baseline_selfdet_intReg_centered = 0")
-H_intReg3 <- hypothesis(modexp_idReg, "treatmentcombiTreat:baseline_selfdet_intReg_centered  = 0")
-
-# Effect size
-bayes_R2(modexp_intReg)
-
-#### Intrinsic Motivation at baseline ####
-
-# Model fitting
-modexp_intMot <- brm(follow_physAct ~ baseline_physAct_centered + treatment*baseline_selfdet_intMot_centered,
-                     data = datscores, 
-                     family = "gaussian",
-                     prior = modelpriors,
-                     sample_prior = "yes") 
-
-# Parameter estimation
-summary(modexp_intMot)
-
-# Hypothesis testing
-H_intMot1 <- hypothesis(modexp_intMot, "treatmentimpInt:baseline_selfdet_intMot_centered = 0")
-H_intMot2 <- hypothesis(modexp_intMot, "treatmentmentCont:baseline_selfdet_intMot_centered = 0")
-H_intMot3 <- hypothesis(modexp_intMot, "treatmentcombiTreat:baseline_selfdet_intMot_centered  = 0")
-
-# Effect size
-bayes_R2(modexp_intMot)
-
-#### Introjection at baseline ####
-
-# Model fitting
-modexp_intro <- brm(follow_physAct ~ baseline_physAct_centered + treatment*baseline_selfdet_intro_centered,
-                    data = datscores, 
-                    family = "gaussian",
-                    prior = modelpriors,
-                    sample_prior = "yes") 
-
-# Parameter estimation
-summary(modexp_intro)
-
-# Hypothesis testing
-H_intro1 <- hypothesis(modexp_intro, "treatmentimpInt:baseline_selfdet_intro_centered = 0")
-H_intro2 <- hypothesis(modexp_intro, "treatmentmentCont:baseline_selfdet_intro_centered = 0")
-H_intro3 <- hypothesis(modexp_intro, "treatmentcombiTreat:baseline_selfdet_intro_centered  = 0")
-
-# Effect size
-bayes_R2(modexp_intro)
 
 ################# Exploratory Mediation Hypotheses #############################
 
