@@ -47,13 +47,12 @@ datscores$baseline_sociocog_subjnorm <- preregDat[, 29]
 datscores$baseline_sociocog_behControl <- rowMeans(preregDat[, 30:32], na.rm = TRUE)
 datscores$baseline_sociocog_intStrength <- rowMeans(preregDat[, 33:35], na.rm = TRUE)
 datscores$treatment <- preregDat[, 36]
-datscores$post_energization <- rowMeans(preregDat[, 37:41], na.rm = TRUE)
-datscores$post_commitment <- rowMeans(preregDat[, 42:44], na.rm = TRUE)
-datscores$post_affcommitment <- rowMeans(preregDat[, 45:47], na.rm = TRUE)
-datscores$gender <- preregDat[, 48]
-datscores$age <- preregDat[,49]
-datscores$follow_physAct <- preregDat[,52]
-datscores$follow_automaticity <- rowMeans(preregDat[, 53:56], na.rm = TRUE)
+datscores$post_commitment <- rowMeans(preregDat[, 37:39], na.rm = TRUE)
+datscores$post_affcommitment <- rowMeans(preregDat[, 40:42], na.rm = TRUE)
+datscores$gender <- preregDat[, 43]
+datscores$age <- preregDat[,44]
+datscores$follow_physAct <- preregDat[,47]
+datscores$follow_automaticity <- rowMeans(preregDat[, 48:51], na.rm = TRUE)
 
 ####### Compute McDonalds Omega for all scales consisting of multiple items ####
 
@@ -67,7 +66,6 @@ omega_baseline_selfdet_intMot <- strel(preregDat[, 21:23], estimates = "omega", 
 omega_baseline_sociocog_att <- strel(preregDat[, 24:28], estimates = "omega", Bayes=TRUE, freq = FALSE)
 omega_baseline_behControl <- strel(preregDat[, 30:32], estimates = "omega", Bayes=TRUE, freq = FALSE)
 omega_baseline_sociocog_intStrength <- strel(preregDat[, 33:35], estimates = "omega", Bayes=TRUE, freq = FALSE)
-omega_post_energization <- strel(preregDat[, 37:41], estimates = "omega", Bayes=TRUE, freq = FALSE)
 omega_post_commitment <- strel(preregDat[, 42:44], estimates = "omega", Bayes=TRUE, freq = FALSE)
 omega_post_affcommitment <- strel(preregDat[, 45:47], estimates = "omega", Bayes=TRUE, freq = FALSE)
 omega_follow_automaticity <- strel(preregDat[, 53:56], estimates = "omega", Bayes=TRUE, freq = FALSE)
@@ -295,41 +293,6 @@ if(H32e$hypothesis$Evid.Ratio < 1/6) H32e_postprob <- hypothesis(mod3_2, "treatm
 
 # Effect size
 bayes_R2(mod3_2)
-
-############ H4: Hypothesis testing and parameter estimation ###################
-
-# Prior distributions
-modelpriors <- c(set_prior("normal(0, 2)", class = "b"),
-                 set_prior("normal(4, 1.5)", class = "Intercept", lb=0),
-                 set_prior("student_t(3, 0, 0.5)", class = "sigma"))
-
-# Model fitting
-mod4 <- brm(post_energization ~ treatment, 
-            data = datscores, 
-            family = "gaussian",
-            prior = modelpriors,
-            sample_prior = "yes",
-            save_pars = save_pars(all = TRUE))
-
-# Parameter estimation
-summary(mod4)
-
-# Hypothesis testing
-H4a <- hypothesis(mod4, "treatmentcombiTreat - treatmentmentCont = 0")
-H4b <- hypothesis(mod4, "treatmentcombiTreat - treatmentimpInt = 0")
-H4c <- hypothesis(mod4, "treatmentcombiTreat = 0")
-H4d <- hypothesis(mod4, "treatmentimpInt - treatmentmentCont = 0")
-H4e <- hypothesis(mod4, "treatmentmentCont = 0")
-H4f <- hypothesis(mod4, "treatmentimpInt = 0")
-
-# Posterior probability if BF > 6
-if(H4b$hypothesis$Evid.Ratio < 1/6) H4b_postprob <- hypothesis(mod4, "treatmentcombiTreat - treatmentimpInt > 0")
-if(H4c$hypothesis$Evid.Ratio < 1/6) H4c_postprob <- hypothesis(mod4, "treatmentcombiTreat > 0")
-if(H4d$hypothesis$Evid.Ratio < 1/6) H4d_postprob <- hypothesis(mod4, "treatmentimpInt - treatmentmentCont > 0")
-if(H4e$hypothesis$Evid.Ratio < 1/6) H4e_postprob <- hypothesis(mod4, "treatmentmentCont > 0")
-
-# Effect size
-bayes_R2(mod4)
 
 ################# Exploratory Moderation Hypotheses ############################
 
@@ -576,17 +539,6 @@ mediation(med2)
 # Effect size
 bayes_R2(med2)
 
-#### treatment -> energization -> physical activity ####
-
-f1 <- bf(post_energization ~ baseline_physAct_centered + treatment)
-f2 <- bf(follow_physAct ~ baseline_physAct_centered + treatment + post_energization)
-med3 <- brm(f1+f2+set_rescor(FALSE), data = datscores)
-
-mediation(med3)
-
-# Effect size
-bayes_R2(med3)
-
 #### treatment -> experienced automaticity -> physical activity ####
 
 f1 <- bf(follow_automaticity ~ baseline_physAct_centered + baseline_automaticity_centered + treatment)
@@ -699,26 +651,3 @@ bayes_factor(mod3_2, mod3_2_r)
 # Effect size
 bayes_R2(mod3_2_r)
 
-#### Hypothesis 4: Energization ####
-
-energyData <- cbind(preregDat[, 37:41], treatment=preregDat$treatment, ID_person=seq(1, nrow(preregDat)))
-energyData_long <-  reshape2::melt(energyData, id.vars = c("ID_person", "treatment"))
-colnames(energyData_long)[4] <- c("energization")
-energyData_long$treatment <- factor(energyData_long$treatment, levels = c("control", "impInt", "mentCont", "combiTreat"))
-energyData_long$item <- parse_number(as.character(energyData_long$variable))
-
-# Model fitting
-mod4_r <- brm(energization ~ 1 + treatment + (1 | ID_person) + (1 | item),
-              data = energyData_long,
-              family = cumulative("probit"),
-              sample_prior = "yes",
-              save_pars = save_pars(all = TRUE))
-
-# Parameter estimation
-summary(mod4_r)
-
-# Model comparison to initial analysis
-bayes_factor(mod4, mod4_r)
-
-# Effect size
-bayes_R2(mod4_r)

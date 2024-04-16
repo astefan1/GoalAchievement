@@ -11,7 +11,7 @@ source("generateData_ANCOVA_H2.R")
 source("conductDA_ANCOVA.R")
 source("analyzeDA_H1.R")
 source("analyzeDA_H2.R")
-source("analyzeDA_H3H4.R")
+source("analyzeDA_H3.R")
 
 ################## H0, retest reliability: 0.75, N = 500 #######################
 
@@ -31,11 +31,11 @@ DA_H0_rr75_N500_H31 <- DA_ANCOVA(simData = DAT_H0_rr75_N500_H31,
 
 save(DA_H0_rr75_N500_H31, file = "./generated_data/DA_H0_rr75_N500_H31.RData")
 
-res_H0_rr75_H31_N500 <- analyze_DA_Effects_H3H4(DA_H0_rr75_N500_H31)
+res_H0_rr75_H31_N500 <- analyze_DA_Effects_H3(DA_H0_rr75_N500_H31)
 save(res_H0_rr75_H31_N500, file = "./generated_data/res_H0_rr75_H31_N500.RData")
 
-BFtable_H3H4(res_H0_rr75_H31_N500)
-postprobcat_H3H4(res_H0_rr75_H31_N500)
+BFtable_H3(res_H0_rr75_H31_N500)
+postprobcat_H3(res_H0_rr75_H31_N500)
 
 par(oma=c(0,0,6,0))
 analyze_DA_postMeans(DA_H0_rr75_N500_H31, 
@@ -68,11 +68,11 @@ DA_H0_rr75_N600_H31 <- DA_ANCOVA(simData = DAT_H0_rr75_N600_H31,
 
 save(DA_H0_rr75_N600_H31, file = "./generated_data/DA_H0_rr75_N600_H31.RData")
 
-res_H0_rr75_H31_N600 <- analyze_DA_Effects_H3H4(DA_H0_rr75_N600_H31)
+res_H0_rr75_H31_N600 <- analyze_DA_Effects_H3(DA_H0_rr75_N600_H31)
 save(res_H0_rr75_H31_N600, file = "./generated_data/res_H0_rr75_H31_N600.RData")
 
-BFtable_H3H4(res_H0_rr75_H31_N600)
-postprobcat_H3H4(res_H0_rr75_H31_N600)
+BFtable_H3(res_H0_rr75_H31_N600)
+postprobcat_H3(res_H0_rr75_H31_N600)
 
 par(oma=c(0,0,6,0))
 analyze_DA_postMeans(DA_H0_rr75_N600_H31, 
@@ -105,11 +105,11 @@ DA_H0_rr60_N500_H31 <- DA_ANCOVA(simData = DAT_H0_rr60_N500_H31,
 
 save(DA_H0_rr60_N500_H31, file = "./generated_data/DA_H0_rr60_N500_H31.RData")
 
-res_H0_rr60_H31_N500 <- analyze_DA_Effects_H3H4(DA_H0_rr60_N500_H31)
+res_H0_rr60_H31_N500 <- analyze_DA_Effects_H3(DA_H0_rr60_N500_H31)
 save(res_H0_rr60_H31_N500, file = "./generated_data/res_H0_rr60_H31_N500.RData")
 
-BFtable_H3H4(res_H0_rr60_H31_N500)
-postprobcat_H3H4(res_H0_rr60_H31_N500)
+BFtable_H3(res_H0_rr60_H31_N500)
+postprobcat_H3(res_H0_rr60_H31_N500)
 
 par(oma=c(0,0,6,0))
 analyze_DA_postMeans(DA_H0_rr60_N500_H31, 
@@ -142,11 +142,11 @@ DA_H0_rr60_N600_H31 <- DA_ANCOVA(simData = DAT_H0_rr60_N600_H31,
 
 save(DA_H0_rr60_N600_H31, file = "./generated_data/DA_H0_rr60_N600_H31.RData")
 
-res_H0_rr60_H31_N600 <- analyze_DA_Effects_H3H4(DA_H0_rr60_N600_H31)
+res_H0_rr60_H31_N600 <- analyze_DA_Effects_H3(DA_H0_rr60_N600_H31)
 save(res_H0_rr60_H31_N600, file = "./generated_data/res_H0_rr60_H31_N600.RData")
 
-BFtable_H3H4(res_H0_rr60_H31_N600)
-postprobcat_H3H4(res_H0_rr60_H31_N600)
+BFtable_H3(res_H0_rr60_H31_N600)
+postprobcat_H3(res_H0_rr60_H31_N600)
 
 par(oma=c(0,0,6,0))
 analyze_DA_postMeans(DA_H0_rr60_N600_H31, 
@@ -180,11 +180,11 @@ DA_H1_rr75_N500_H31 <- DA_ANCOVA(simData = DAT_H1_rr75_N500_H31,
 
 save(DA_H1_rr75_N500_H31, file = "./generated_data/DA_H1_rr75_N500_H31.RData")
 
-res_H1_rr75_H31_N500 <- analyze_DA_Effects_H3H4(DA_H1_rr75_N500_H31)
+res_H1_rr75_H31_N500 <- analyze_DA_Effects_H3(DA_H1_rr75_N500_H31)
 save(res_H1_rr75_H31_N500, file = "./generated_data/res_H1_rr75_H31_N500.RData")
 
-BFtable_H3H4(res_H1_rr75_H31_N500)
-postprobcat_H3H4(res_H1_rr75_H31_N500)
+BFtable_H3(res_H1_rr75_H31_N500)
+postprobcat_H3(res_H1_rr75_H31_N500)
 
 par(oma=c(0,0,6,0))
 analyze_DA_postMeans(DA_H1_rr75_N500_H31, 
@@ -218,11 +218,11 @@ DA_H1_rr75_N600_H31 <- DA_ANCOVA(simData = DAT_H1_rr75_N600_H31,
 
 save(DA_H1_rr75_N600_H31, file = "./generated_data/DA_H1_rr75_N600_H31.RData")
 
-res_H1_rr75_H31_N600 <- analyze_DA_Effects_H3H4(DA_H1_rr75_N600_H31)
+res_H1_rr75_H31_N600 <- analyze_DA_Effects_H3(DA_H1_rr75_N600_H31)
 save(res_H1_rr75_H31_N600, file = "./generated_data/res_H1_rr75_H31_N600.RData")
 
-BFtable_H3H4(res_H1_rr75_H31_N600)
-postprobcat_H3H4(res_H1_rr75_H31_N600)
+BFtable_H3(res_H1_rr75_H31_N600)
+postprobcat_H3(res_H1_rr75_H31_N600)
 
 par(oma=c(0,0,6,0))
 analyze_DA_postMeans(DA_H1_rr75_N600_H31, 
@@ -256,11 +256,11 @@ DA_H1_rr60_N500_H31 <- DA_ANCOVA(simData = DAT_H1_rr60_N500_H31,
 
 save(DA_H1_rr60_N500_H31, file = "./generated_data/DA_H1_rr60_N500_H31.RData")
 
-res_H1_rr60_H31_N500 <- analyze_DA_Effects_H3H4(DA_H1_rr60_N500_H31)
+res_H1_rr60_H31_N500 <- analyze_DA_Effects_H3(DA_H1_rr60_N500_H31)
 save(res_H1_rr60_H31_N500, file = "./generated_data/res_H1_rr60_H31_N500.RData")
 
-BFtable_H3H4(res_H1_rr60_H31_N500)
-postprobcat_H3H4(res_H1_rr60_H31_N500)
+BFtable_H3(res_H1_rr60_H31_N500)
+postprobcat_H3(res_H1_rr60_H31_N500)
 
 par(oma=c(0,0,6,0))
 analyze_DA_postMeans(DA_H1_rr60_N500_H31, 
@@ -294,11 +294,11 @@ DA_H1_rr60_N600_H31 <- DA_ANCOVA(simData = DAT_H1_rr60_N600_H31,
 
 save(DA_H1_rr60_N600_H31, file = "./generated_data/DA_H1_rr60_N600_H31.RData")
 
-res_H1_rr60_H31_N600 <- analyze_DA_Effects_H3H4(DA_H1_rr60_N600_H31)
+res_H1_rr60_H31_N600 <- analyze_DA_Effects_H3(DA_H1_rr60_N600_H31)
 save(res_H1_rr60_H31_N600, file = "./generated_data/res_H1_rr60_H31_N600.RData")
 
-BFtable_H3H4(res_H1_rr60_H31_N600)
-postprobcat_H3H4(res_H1_rr60_H31_N600)
+BFtable_H3(res_H1_rr60_H31_N600)
+postprobcat_H3(res_H1_rr60_H31_N600)
 
 par(oma=c(0,0,6,0))
 analyze_DA_postMeans(DA_H1_rr60_N600_H31, 

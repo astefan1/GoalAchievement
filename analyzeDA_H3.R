@@ -1,12 +1,12 @@
 # ==============================================================================
-# Functions to analyze the Monte Carlo draws of the design analysis for H3 and H4
+# Functions to analyze the Monte Carlo draws of the design analysis for H3 
 # ==============================================================================
 
 # #' Posterior probabilities and Bayes factors for all sub-hypotheses for 
 #' one simulation condition (sample size, retest reliability, H0/H1)
 #' @param DAresult Result object of the DA_ANCOVA() function
 
-analyze_DA_Effects_H3H4 <- function(DAresult){
+analyze_DA_Effects_H3 <- function(DAresult){
   
   N <- length(DAresult)
   
@@ -50,10 +50,9 @@ analyze_DA_Effects_H3H4 <- function(DAresult){
 }
 
 #' Function to create a table with Bayes factors for each of the sub-hypotheses
-#' @param DAresultH2 Result object of the analyze_DA_Effects_H2() function
-#' @param whichhyp "H3" or "H4"
+#' @param DAresultH3 Result object of the analyze_DA_Effects_H2() function
 
-BFtable_H3H4 <- function(DAresultH3H4, whichhyp="H3"){
+BFtable_H3 <- function(DAresultH3){
   
   BFcat <- c("BF < 1/10", "1/10 < BF < 1/6", "1/6 < BF < 1/3", "1/3 < BF < 1", 
              "1 < BF < 3", "3 < BF < 6", "6 < BF < 10", "10 < BF")
@@ -61,30 +60,30 @@ BFtable_H3H4 <- function(DAresultH3H4, whichhyp="H3"){
   BFmatrix <- matrix(NA, nrow=0, ncol=8)
   for(i in 1:6){
     BFmatrix <- rbind(BFmatrix, 
-                      table(cut(1/DAresultH3H4[[i]][,1],
+                      table(cut(1/DAresultH3[[i]][,1],
                                 c(-Inf, 0, 1/10, 1/6, 1/3, 1, 3, 6, 10, Inf)))[-1])
     BFmatrix[i,] <- BFmatrix[i,] / sum(BFmatrix[i,])*100
   }
   colnames(BFmatrix) <- BFcat
-  rownames(BFmatrix) <- paste0(whichhyp, letters[1:6])
+  rownames(BFmatrix) <- paste0("H3", letters[1:6])
   xtable(BFmatrix)
 }
 
 #' Function to create a table of posterior probabilities for each of the sub-
 #' hypotheses conditional on initial BF > 6
-#' @param Result object of the analyze_DA_Effects_H2() function
+#' @param DAresultH3 object of the analyze_DA_Effects_H2() function
 
-postprobcat_H3H4 <- function(DAresultH3H4, whichhyp="H3"){
+postprobcat_H3 <- function(DAresultH3){
   
   postProbcat <- c(0, 0.5, 0.7, 0.9, 1.0)
   postProbMatrix <- matrix(NA, nrow=0, ncol=4)
   for(i in c(2:5)){
     postProbMatrix <- rbind(postProbMatrix,
-                            table(cut(DAresultH3H4[[i]][DAresultH3H4[[i]][,1]<1/6,2], 
+                            table(cut(DAresultH3[[i]][DAresultH3[[i]][,1]<1/6,2], 
                                       postProbcat)))
   }
   colnames(postProbMatrix) <- c("p < 0.5", "0.5 < p < 0.7", "0.7 < p < 0.9", "0.9 < p < 1")
-  rownames(postProbMatrix) <- paste0(whichhyp, letters[c(2:5)])
+  rownames(postProbMatrix) <- paste0("H3", letters[c(2:5)])
   xtable(postProbMatrix)
 }
 

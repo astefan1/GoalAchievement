@@ -8,7 +8,7 @@ library(MASS)
 library(xtable)
 source("generateData_ANOVA.R")
 source("conductDA_ANOVA.R")
-source("analyzeDA_H3H4.R")
+source("analyzeDA_H3.R")
 
 ############################### H0, N = 500 ####################################
 
@@ -28,11 +28,11 @@ DA_H0_N500_H3 <- DA_ANOVA(simData = DAT_H0_N500_H3,
 
 save(DA_H0_N500_H3, file = "./generated_data/DA_H0_N500_H3.RData")
 
-res_H0_H3_N500 <- analyze_DA_Effects_H3H4(DA_H0_N500_H3)
+res_H0_H3_N500 <- analyze_DA_Effects_H3(DA_H0_N500_H3)
 save(res_H0_H3_N500, file = "./generated_data/res_H0_H3_N500.RData")
 
-BFtable_H3H4(res_H0_H3_N500, whichhyp = "H3")
-postprobcat_H3H4(res_H0_H3_N500, whichhyp = "H3")
+BFtable_H3(res_H0_H3_N500)
+postprobcat_H3(res_H0_H3_N500)
 
 par(oma=c(0,0,6,0))
 analyze_DA_postMeans(DA_H0_N500_H3, 
@@ -64,11 +64,11 @@ DA_H0_N600_H3 <- DA_ANOVA(simData = DAT_H0_N600_H3,
 
 save(DA_H0_N600_H3, file = "./generated_data/DA_H0_N600_H3.RData")
 
-res_H0_H3_N600 <- analyze_DA_Effects_H3H4(DA_H0_N600_H3)
+res_H0_H3_N600 <- analyze_DA_Effects_H3(DA_H0_N600_H3)
 save(res_H0_H3_N600, file = "./generated_data/res_H0_H3_N600.RData")
 
-BFtable_H3H4(res_H0_H3_N600, whichhyp = "H3")
-postprobcat_H3H4(res_H0_H3_N600, whichhyp = "H3")
+BFtable_H3(res_H0_H3_N600)
+postprobcat_H3(res_H0_H3_N600)
 
 
 par(oma=c(0,0,6,0))
@@ -101,11 +101,11 @@ DA_H1_N500_H3 <- DA_ANOVA(simData = DAT_H1_N500_H3,
 
 save(DA_H1_N500_H3, file = "./generated_data/DA_H1_N500_H3.RData")
 
-res_H1_H3_N500 <- analyze_DA_Effects_H3H4(DA_H1_N500_H3)
+res_H1_H3_N500 <- analyze_DA_Effects_H3(DA_H1_N500_H3)
 save(res_H1_H3_N500, file = "./generated_data/res_H1_H3_N500.RData")
 
-BFtable_H3H4(res_H1_H3_N500, whichhyp = "H3")
-postprobcat_H3H4(res_H1_H3_N500, whichhyp = "H3")
+BFtable_H3(res_H1_H3_N500)
+postprobcat_H3(res_H1_H3_N500)
 
 par(oma=c(0,0,6,0))
 analyze_DA_postMeans(DA_H1_N500_H3, 
@@ -137,11 +137,11 @@ DA_H1_N600_H3 <- DA_ANOVA(simData = DAT_H1_N600_H3,
 
 save(DA_H1_N600_H3, file = "./generated_data/DA_H1_N600_H3.RData")
 
-res_H1_H3_N600 <- analyze_DA_Effects_H3H4(DA_H1_N600_H3)
+res_H1_H3_N600 <- analyze_DA_Effects_H3(DA_H1_N600_H3)
 save(res_H1_H3_N600, file = "./generated_data/res_H1_H3_N600.RData")
 
-BFtable_H3H4(res_H1_H3_N600, whichhyp = "H3")
-postprobcat_H3H4(res_H1_H3_N600, whichhyp = "H3")
+BFtable_H3(res_H1_H3_N600)
+postprobcat_H3(res_H1_H3_N600)
 
 par(oma=c(0,0,6,0))
 analyze_DA_postMeans(DA_H1_N600_H3, 

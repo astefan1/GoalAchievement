@@ -59,13 +59,6 @@ preregDat$baseline_sociocog_intStrength3 <- sample(1:7, replace = TRUE, size = 6
 # Treatment Group
 preregDat$treatment <- rep(c("control", "impInt", "mentCont", "combiTreat"), length.out=660)
 
-# Energization Post Intervention
-preregDat$post_energization1 <- sample(1:7, replace = TRUE, size = 660)
-preregDat$post_energization2 <- sample(1:7, replace = TRUE, size = 660)
-preregDat$post_energization3 <- sample(1:7, replace = TRUE, size = 660)
-preregDat$post_energization4 <- sample(1:7, replace = TRUE, size = 660)
-preregDat$post_energization5 <- sample(1:7, replace = TRUE, size = 660)
-
 # Goal Commitment Post Intervention
 preregDat$post_commitment1 <- sample(1:7, replace = TRUE, size = 660)
 preregDat$post_commitment2 <- sample(1:7, replace = TRUE, size = 660)
