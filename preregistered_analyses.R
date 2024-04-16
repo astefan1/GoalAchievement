@@ -45,10 +45,10 @@ datscores$baseline_selfdet_intMot <- rowMeans(preregDat[, 21:23], na.rm = TRUE)
 datscores$baseline_sociocog_att <- rowMeans(preregDat[, 24:28], na.rm = TRUE)
 datscores$baseline_sociocog_subjnorm <- preregDat[, 29]
 datscores$baseline_sociocog_behControl <- rowMeans(preregDat[, 30:32], na.rm = TRUE)
-datscores$baseline_sociocog_intStrength <- rowMeans(preregDat[, 33:35], na.rm = TRUE)
+datscores$baseline_sociocog_commitDirect <- rowMeans(preregDat[, 33:35], na.rm = TRUE)
 datscores$treatment <- preregDat[, 36]
-datscores$post_commitment <- rowMeans(preregDat[, 37:39], na.rm = TRUE)
-datscores$post_affcommitment <- rowMeans(preregDat[, 40:42], na.rm = TRUE)
+datscores$post_commitDirect <- rowMeans(preregDat[, 37:39], na.rm = TRUE)
+datscores$post_commitIndirect <- rowMeans(preregDat[, 40:42], na.rm = TRUE)
 datscores$gender <- preregDat[, 43]
 datscores$age <- preregDat[,44]
 datscores$follow_physAct <- preregDat[,47]
@@ -65,10 +65,10 @@ omega_baseline_selfdet_intReg <- strel(preregDat[, 18:20], estimates = "omega", 
 omega_baseline_selfdet_intMot <- strel(preregDat[, 21:23], estimates = "omega", Bayes=TRUE, freq = FALSE)
 omega_baseline_sociocog_att <- strel(preregDat[, 24:28], estimates = "omega", Bayes=TRUE, freq = FALSE)
 omega_baseline_behControl <- strel(preregDat[, 30:32], estimates = "omega", Bayes=TRUE, freq = FALSE)
-omega_baseline_sociocog_intStrength <- strel(preregDat[, 33:35], estimates = "omega", Bayes=TRUE, freq = FALSE)
-omega_post_commitment <- strel(preregDat[, 42:44], estimates = "omega", Bayes=TRUE, freq = FALSE)
-omega_post_affcommitment <- strel(preregDat[, 45:47], estimates = "omega", Bayes=TRUE, freq = FALSE)
-omega_follow_automaticity <- strel(preregDat[, 53:56], estimates = "omega", Bayes=TRUE, freq = FALSE)
+omega_baseline_sociocog_commitDirect <- strel(preregDat[, 33:35], estimates = "omega", Bayes=TRUE, freq = FALSE)
+omega_post_commitDirect <- strel(preregDat[, 37:39], estimates = "omega", Bayes=TRUE, freq = FALSE)
+omega_post_commitIndirect <- strel(preregDat[, 40:42], estimates = "omega", Bayes=TRUE, freq = FALSE)
+omega_follow_automaticity <- strel(preregDat[, 48:51], estimates = "omega", Bayes=TRUE, freq = FALSE)
 
 ################################################################################
 
@@ -208,10 +208,10 @@ bayes_R2(mod2)
 
 ############ H3: Hypothesis testing and parameter estimation ###################
 
-#### H3_1: Motivational Goal Commitment ####
+#### H3_1: Goal Commitment - Direct Measure ####
 
 # Data preparation
-datscores$baseline_sociocog_intStrength_centered <- datscores$baseline_sociocog_intStrength - mean(datscores$baseline_sociocog_intStrength)
+datscores$baseline_sociocog_commitDirect_centered <- datscores$baseline_sociocog_commitDirect - mean(datscores$baseline_sociocog_commitDirect)
 
 # Prior distributions
 modelpriors <- c(set_prior("normal(0, 2)", class = "b"),
@@ -219,14 +219,14 @@ modelpriors <- c(set_prior("normal(0, 2)", class = "b"),
                  set_prior("student_t(3, 0, 0.5)", class = "sigma"))
 
 # Model fitting
-mod3_1 <- brm(post_commitment ~ baseline_sociocog_intStrength_centered + treatment,
+mod3_1 <- brm(post_commitDirect ~ baseline_sociocog_commitDirect_centered + treatment,
               data = datscores, 
               family = "gaussian",
               prior = modelpriors,
               sample_prior = "yes",
               save_pars = save_pars(all = TRUE))
 
-mod3_1_2 <- brm(post_commitment ~ baseline_sociocog_intStrength_centered * treatment,
+mod3_1_2 <- brm(post_commitDirect ~ baseline_sociocog_commitDirect_centered * treatment,
               data = datscores, 
               family = "gaussian",
               prior = modelpriors,
@@ -264,10 +264,10 @@ if(H31e$hypothesis$Evid.Ratio < 1/6) H32e_postprob <- hypothesis(mod3_1, "treatm
 # Effect size
 bayes_R2(mod3_1)
 
-#### H3_2: Affective Goal Commitment ####
+#### H3_2: Goal Commitment - Indirect Measure ####
 
 # Model fitting
-mod3_2 <- brm(post_affcommitment ~ treatment,
+mod3_2 <- brm(post_commitIndirect ~ treatment,
               data = datscores, 
               family = "gaussian",
               prior = modelpriors,
@@ -299,7 +299,7 @@ bayes_R2(mod3_2)
 # Data preparation
 datscores$baseline_sociocog_att_centered <- datscores$baseline_sociocog_att-mean(datscores$baseline_sociocog_att)
 datscores$baseline_sociocog_behControl_centered <- datscores$baseline_sociocog_behControl-mean(datscores$baseline_sociocog_behControl)
-datscores$baseline_sociocog_intStrength_centered <- datscores$baseline_sociocog_intStrength-mean(datscores$baseline_sociocog_intStrength)
+datscores$baseline_sociocog_commitDirect_centered <- datscores$baseline_sociocog_commitDirect-mean(datscores$baseline_sociocog_commitDirect)
 datscores$baseline_sociocog_subjnorm_centered <- datscores$baseline_sociocog_subjnorm-mean(datscores$baseline_sociocog_subjnorm)
 
 # Prior distributions
@@ -330,22 +330,22 @@ bayes_R2(modexp_att)
 #### Strength of intention at baseline ####
 
 # Model fitting
-modexp_intStrength <- brm(follow_physAct ~ baseline_physAct_centered + treatment*baseline_sociocog_intStrength_centered,
+modexp_commitDirect <- brm(follow_physAct ~ baseline_physAct_centered + treatment*baseline_sociocog_commitDirect_centered,
                           data = datscores, 
                           family = "gaussian",
                           prior = modelpriors,
                           sample_prior = "yes") 
 
 # Parameter estimation
-summary(modexp_intStrength)
+summary(modexp_commitDirect)
 
 # Hypothesis testing
-H_intStrength1 <- hypothesis(modexp_intStrength, "treatmentimpInt:baseline_sociocog_intStrength_centered = 0")
-H_intStrength2 <- hypothesis(modexp_intStrength, "treatmentmentCont:baseline_sociocog_intStrength_centered = 0")
-H_intStrength3 <- hypothesis(modexp_intStrength, "treatmentcombiTreat:baseline_sociocog_intStrength_centered  = 0")
+H_commitDirect1 <- hypothesis(modexp_commitDirect, "treatmentimpInt:baseline_sociocog_commitDirect_centered = 0")
+H_commitDirect2 <- hypothesis(modexp_commitDirect, "treatmentmentCont:baseline_sociocog_commitDirect_centered = 0")
+H_commitDirect3 <- hypothesis(modexp_commitDirect, "treatmentcombiTreat:baseline_sociocog_commitDirect_centered  = 0")
 
 # Effect size
-bayes_R2(modexp_intStrength)
+bayes_R2(modexp_commitDirect)
 
 #### Subjective norms at baseline ####
 
@@ -394,8 +394,8 @@ rm(modelpriors)
 
 #### treatment -> affective commitment -> physical activity ####
 
-f1 <- bf(post_affcommitment ~ baseline_physAct_centered + treatment)
-f2 <- bf(follow_physAct ~ baseline_physAct_centered + treatment + post_affcommitment)
+f1 <- bf(post_commitIndirect ~ baseline_physAct_centered + treatment)
+f2 <- bf(follow_physAct ~ baseline_physAct_centered + treatment + post_commitIndirect)
 med1 <- brm(f1+f2+set_rescor(FALSE), data = datscores)
 
 mediation(med1)
@@ -403,10 +403,10 @@ mediation(med1)
 # Effect size
 bayes_R2(med1)
 
-#### treatment -> motivational commitment -> physical activity ####
+#### treatment -> commitment (direct measure) -> physical activity ####
 
-f1 <- bf(post_commitment ~ baseline_physAct_centered + baseline_sociocog_intStrength_centered + treatment)
-f2 <- bf(follow_physAct ~ baseline_physAct_centered + baseline_sociocog_intStrength_centered + treatment + post_commitment)
+f1 <- bf(post_commitDirect ~ baseline_physAct_centered + baseline_sociocog_commitDirect_centered + treatment)
+f2 <- bf(follow_physAct ~ baseline_physAct_centered + baseline_sociocog_commitDirect_centered + treatment + post_commitDirect)
 med2 <- brm(f1+f2+set_rescor(FALSE), data = datscores)
 
 mediation(med2)
@@ -476,19 +476,19 @@ bayes_factor(mod2, mod2_r)
 # Effect size
 bayes_R2(mod2_r)
 
-#### Hypothesis 3-1: Motivational Goal Commitment ####
+#### Hypothesis 3-1: Goal Commitment - Direct Measure ####
 
 # Data preparation
-motcomData <- cbind(preregDat[, 33:35], preregDat[, 42:44], treatment=preregDat$treatment, ID_person=seq(1, nrow(preregDat)))
-motcomData_long <-  reshape2::melt(motcomData, id.vars = c("ID_person", "treatment"))
-motcomData_long$time <- as.numeric(grepl("follow", motcomData_long$variable))
-colnames(motcomData_long)[4] <- c("motCommitment")
-motcomData_long$treatment <- factor(motcomData_long$treatment, levels = c("control", "impInt", "mentCont", "combiTreat"))
-motcomData_long$item <- parse_number(as.character(motcomData_long$variable))
+dirComData <- cbind(preregDat[, 33:35], preregDat[, 42:44], treatment=preregDat$treatment, ID_person=seq(1, nrow(preregDat)))
+dirComData_long <-  reshape2::melt(dirComData, id.vars = c("ID_person", "treatment"))
+dirComData_long$time <- as.numeric(grepl("follow", dirComData_long$variable))
+colnames(dirComData_long)[4] <- c("dirCommitment")
+dirComData_long$treatment <- factor(dirComData_long$treatment, levels = c("control", "impInt", "mentCont", "combiTreat"))
+dirComData_long$item <- parse_number(as.character(dirComData_long$variable))
 
 # Model fitting
-mod3_1_r <- brm(motCommitment ~ 1 + time*treatment + (1 | ID_person) + (1 | item),
-                data = motcomData_long, 
+mod3_1_r <- brm(dirCommitment ~ 1 + time*treatment + (1 | ID_person) + (1 | item),
+                data = dirComData_long, 
                 family = cumulative("probit"),
                 sample_prior = "yes",
                 save_pars = save_pars(all = TRUE))
@@ -502,17 +502,17 @@ bayes_factor(mod3_1, mod2_r)
 # Effect size
 bayes_R2(mod3_1_r)
 
-#### Hypothesis 3-2: Affective Goal Commitment ####
+#### Hypothesis 3-2: Goal Commitment - Indirect Measure ####
 
-affcomData <- cbind(preregDat[, 45:47], treatment=preregDat$treatment, ID_person=seq(1, nrow(preregDat)))
-affcomData_long <-  reshape2::melt(affcomData, id.vars = c("ID_person", "treatment"))
-colnames(affcomData_long)[4] <- c("affCommitment")
-affcomData_long$treatment <- factor(affcomData_long$treatment, levels = c("control", "impInt", "mentCont", "combiTreat"))
-affcomData_long$item <- parse_number(as.character(affcomData_long$variable))
+indComData <- cbind(preregDat[, 45:47], treatment=preregDat$treatment, ID_person=seq(1, nrow(preregDat)))
+indComData_long <-  reshape2::melt(indComData, id.vars = c("ID_person", "treatment"))
+colnames(IndComData_long)[4] <- c("commitIndirect")
+indComData_long$treatment <- factor(indComData_long$treatment, levels = c("control", "impInt", "mentCont", "combiTreat"))
+indComData_long$item <- parse_number(as.character(indComData_long$variable))
 
 # Model fitting
-mod3_2_r <- brm(affCommitment ~ 1 + treatment + (1 | ID_person) + (1 | item),
-                data = affcomData_long,
+mod3_2_r <- brm(commitIndirect ~ 1 + treatment + (1 | ID_person) + (1 | item),
+                data = indComData_long,
                 family = cumulative("probit"),
                 sample_prior = "yes",
                 save_pars = save_pars(all = TRUE))

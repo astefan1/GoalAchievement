@@ -52,20 +52,20 @@ preregDat$baseline_sociocog_subjnorm1 <- sample(1:7, replace = TRUE, size = 660)
 preregDat$baseline_sociocog_behControl1 <- sample(1:7, replace = TRUE, size = 660)
 preregDat$baseline_sociocog_behControl2 <- sample(1:7, replace = TRUE, size = 660)
 preregDat$baseline_sociocog_behControl3 <- sample(1:7, replace = TRUE, size = 660)
-preregDat$baseline_sociocog_intStrength1 <- sample(1:7, replace = TRUE, size = 660)
-preregDat$baseline_sociocog_intStrength2 <- sample(1:7, replace = TRUE, size = 660)
-preregDat$baseline_sociocog_intStrength3 <- sample(1:7, replace = TRUE, size = 660)
+preregDat$baseline_sociocog_commitDirect1 <- sample(1:7, replace = TRUE, size = 660)
+preregDat$baseline_sociocog_commitDirect2 <- sample(1:7, replace = TRUE, size = 660)
+preregDat$baseline_sociocog_commitDirect3 <- sample(1:7, replace = TRUE, size = 660)
 
 # Treatment Group
 preregDat$treatment <- rep(c("control", "impInt", "mentCont", "combiTreat"), length.out=660)
 
 # Goal Commitment Post Intervention
-preregDat$post_commitment1 <- sample(1:7, replace = TRUE, size = 660)
-preregDat$post_commitment2 <- sample(1:7, replace = TRUE, size = 660)
-preregDat$post_commitment3 <- sample(1:7, replace = TRUE, size = 660)
-preregDat$post_affcommitment1 <- sample(1:7, replace = TRUE, size = 660)
-preregDat$post_affcommitment2 <- sample(1:7, replace = TRUE, size = 660)
-preregDat$post_affcommitment3 <- sample(1:7, replace = TRUE, size = 660)
+preregDat$post_commitDirect1 <- sample(1:7, replace = TRUE, size = 660)
+preregDat$post_commitDirect2 <- sample(1:7, replace = TRUE, size = 660)
+preregDat$post_commitDirect3 <- sample(1:7, replace = TRUE, size = 660)
+preregDat$post_commitIndirect1 <- sample(1:7, replace = TRUE, size = 660)
+preregDat$post_commitIndirect2 <- sample(1:7, replace = TRUE, size = 660)
+preregDat$post_commitIndirect3 <- sample(1:7, replace = TRUE, size = 660)
 
 # Sociodemographic Information 
 preregDat$gender <- sample(c("male", "female"), size = 660, replace = TRUE)
