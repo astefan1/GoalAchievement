@@ -2,6 +2,9 @@
 # GENERIC DATA SIMULATION FUNCTION FOR ANCOVA (HYPOTHESIS 2)
 # ==============================================================================
 
+# This function lets you set the effectiveness of the three interventions
+# freely (as difference from control group)
+
 #'@param iter Number of generated datasets
 #'@param N Number of observations per dataset
 #'@param meanControl Post-treatment mean of the control group

@@ -2,6 +2,9 @@
 # GENERIC DATA SIMULATION FUNCTION FOR ANCOVA (HYPOTHESIS 1)
 # ==============================================================================
 
+# This function assumes that one intervention (combiTreat) is more effective 
+# than two other interventions (impInt, mentCont) that are equally effective.
+
 #'@param iter Number of generated datasets
 #'@param N Number of observations per dataset
 #'@param meanControl Post-treatment mean of the control group

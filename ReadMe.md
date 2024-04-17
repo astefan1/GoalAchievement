@@ -19,32 +19,19 @@
     * "analyzeDA_H1.R"
     * "analyzeDA_H2.R"
     
-### H3-1 (motivational goal commitment)
+### H3-1 (goal commitment measured through direct measures) and H3-2 (goal commitment measured through indirect measures)
 
-* Run the script 'design_analysis_H3-1.R'. This file makes use of functions from four other scripts and contains the entire design analysis for H2, including plots and tables for all conditions:
+* Run the script 'design_analysis_H3.R'. This file makes use of functions from four other scripts and contains the entire design analysis for H2, including plots and tables for all conditions:
     * "generateData_ANCOVA_H1.R"
     * "generateData_ANCOVA_H2.R"
     * "conductDA_ANCOVA.R"
-    * "analyzeDA_H3H4.R"
-
-### H3-2 (affective goal commitment)
-
-* Run the script 'design_analysis_H3-2.R'. This file makes use of functions from three other scripts and contains the entire design analysis for H2, including plots and tables for all conditions:
-    * "generateData_ANOVA.R"
- .  * "conductDA_ANOVA.R"
-    * "analyzeDA_H3H4.R"
-
-### H4 (energization)
-
-* Run the script 'design_analysis_H4.R'. This file makes use of functions from three other scripts and contains the entire design analysis for H2, including plots and tables for all conditions:
-    * "generateData_ANOVA.R"
- .  * "conductDA_ANOVA.R"
-    * "analyzeDA_H3H4.R"
+    * "analyzeDA_H1.R"
+    * "analyzeDA_H2.R"
+    * "analyzeDA_H3.R"
 
 ## Prior predictives
-* 'prior_predictives.R' contains a script to produce prior predictive plots like the one in the manuscript and the supplementary materials for all hypotheses. The script makes use of the following two other scripts:
+* 'prior_predictives.R' contains a script to produce prior predictive plots like the one in the manuscript and the supplementary materials for all hypotheses. The script makes use of the following other script:
     * "generateData_ANCOVA_H1.R"
-    * "generateData_ANOVA.R"
 
 ## Preregistered analyses
 * An overview of analyses that will be conducted on the collected data can be found in "preregistered_analyses.R'. This script uses simulated data created with the script 'generateData_Preregistration.R'.

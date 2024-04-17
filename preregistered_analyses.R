@@ -103,7 +103,7 @@ datscores$treatment <- factor(datscores$treatment, levels = c("control", "impInt
 # Prior distributions
 modelpriors <- c(set_prior("normal(0, 10)", class = "b"),
                  set_prior("normal(13.4, 15)", class = "Intercept", lb=0),
-                 set_prior("student_t(3, 0, 7.5)", class = "sigma"))
+                 set_prior("student_t(3, 0, 7.5)", class = "sigma", lb=0))
 
 # Model fitting
 mod1 <- brm(follow_physAct ~ baseline_physAct_centered + treatment, 
@@ -160,7 +160,7 @@ datscores$baseline_automaticity_centered <- datscores$baseline_automaticity - me
 # Prior distributions
 modelpriors <- c(set_prior("normal(0, 1.5)", class = "b"),
                  set_prior("normal(2.3, 1)", class = "Intercept", lb=0),
-                 set_prior("student_t(3, 0, 0.7)", class = "sigma"))
+                 set_prior("student_t(3, 0, 0.7)", class = "sigma", lb=0))
 
 # Model fitting
 mod2 <- brm(follow_automaticity ~ baseline_automaticity_centered + treatment, 
@@ -218,7 +218,7 @@ datscores$baseline_commitDirect_centered <- datscores$baseline_commitDirect - me
 # Prior distributions
 modelpriors <- c(set_prior("normal(0, 2)", class = "b"),
                  set_prior("normal(4, 1.5)", class = "Intercept", lb=0),
-                 set_prior("student_t(3, 0, 0.5)", class = "sigma"))
+                 set_prior("student_t(3, 0, 0.5)", class = "sigma", lb=0))
 
 # Model fitting
 mod3_1 <- brm(post_commitDirect ~ baseline_commitDirect_centered + treatment,
@@ -328,7 +328,7 @@ datscores$baseline_sociocog_subjnorm_centered <- datscores$baseline_sociocog_sub
 # Prior distributions
 modelpriors <- c(set_prior("normal(0, 10)", class = "b"),
                  set_prior("normal(13.4, 15)", class = "Intercept", lb=0),
-                 set_prior("student_t(3, 0, 7.5)", class = "sigma"))
+                 set_prior("student_t(3, 0, 7.5)", class = "sigma", lb=0))
 
 #### Attitude at baseline ####
 

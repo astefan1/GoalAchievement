@@ -7,7 +7,6 @@ library(MASS)
 library(truncnorm)
 library(ggplot2)
 source("generateData_ANCOVA_H1.R")
-source("generateData_ANOVA.R")
 
 #### H1: Plot Prior Distributions ####
 
@@ -28,7 +27,7 @@ dat$physAct_Pre_centered <-  dat$physAct_Pre-mean(dat$physAct_Pre)
 # Set model priors
 modelpriors <- c(set_prior("normal(0, 10)", class = "b"),
                  set_prior("normal(13.4, 15)", class = "Intercept", lb=0),
-                 set_prior("student_t(3, 0, 7.5)", class = "sigma"))
+                 set_prior("student_t(3, 0, 7.5)", class = "sigma", lb=0))
 
 # Generate draws from prior distributions
 priorSamples <- brm(physAct_Post ~ physAct_Pre_centered + treatment,
@@ -76,7 +75,7 @@ dat$physAct_Pre_centered <-  dat$physAct_Pre-mean(dat$physAct_Pre)
 # Set model priors
 modelpriors <- c(set_prior("normal(0, 1.5)", class = "b"),
                  set_prior("normal(2.3, 1)", class = "Intercept", lb=0),
-                 set_prior("student_t(3, 0, 0.7)", class = "sigma"))
+                 set_prior("student_t(3, 0, 0.7)", class = "sigma", lb=0))
 
 # Generate draws from prior distributions
 priorSamples <- brm(physAct_Post ~ physAct_Pre_centered + treatment,
@@ -99,7 +98,7 @@ ggplot(priorPred_long, aes(x = Var2, y = value)) +
   theme_classic() +
   geom_hline(yintercept = c(-2, 0, 2, 4, 6), colour = "grey", linetype = "dashed") +
   xlab("Treatment Group") +
-  ylab("Physical Activity (Godin Score)") +
+  ylab("Automaticity") +
   scale_x_discrete(labels=c("Control", "Imp. Intentions", "M. Contrasting", "Combined")) +
   ylim(-3,7) +
   theme(axis.text=element_text(size=14),
@@ -118,22 +117,23 @@ mtext("Density", side=2, line = 2, cex=1.5)
 #### H3: Plot Prior Predictive Distributions ####
 
 # Generate one dataset to obtain the right data structure
-dat <- simANOVA(iter=1, N = 350, meanControl = 4, sdWithinGroup = 1.5, effimpInt = 0, effmentCont = 0, effCombi = 0)[[1]]
+dat <- simANCOVA(iter=1, N = 350, meanControl = 4, sdWithinGroup = 1.5, effSingle = 0, effCombi = 0, retestReliability = 0.75)[[1]]
+dat$physAct_Pre_centered <-  dat$physAct_Pre-mean(dat$physAct_Pre)
 
 # Set model priors
 modelpriors <- c(set_prior("normal(0, 2)", class = "b"),
                  set_prior("normal(4, 1.5)", class = "Intercept", lb=0),
-                 set_prior("student_t(3, 0, 0.5)", class = "sigma"))
+                 set_prior("student_t(3, 0, 0.5)", class = "sigma", lb=0))
 
 # Generate draws from prior distributions
-priorSamples <- brm(DV ~ treatment,
+priorSamples <- brm(physAct_Post ~ physAct_Pre_centered + treatment,
                     data = dat, 
                     family = "gaussian", 
                     prior = modelpriors,
                     sample_prior = "only",
                     verbose = FALSE)
 
-newdata <- expand.grid(treatment = c("control", "impInt", "mentCont", "combiTreat"))
+newdata <- expand.grid(treatment = c("control", "impInt", "mentCont", "combiTreat"), physAct_Pre_centered = 0)
 priorPred <- posterior_predict(priorSamples, newdata = newdata)
 
 # Plot prior predictions for average pre-treatment score
@@ -146,7 +146,7 @@ ggplot(priorPred_long, aes(x = Var2, y = value)) +
   theme_classic() +
   geom_hline(yintercept = c(0, 2, 4, 6), colour = "grey", linetype = "dashed") +
   xlab("Treatment Group") +
-  ylab("Physical Activity (Godin Score)") +
+  ylab("Commitment") +
   scale_x_discrete(labels=c("Control", "Imp. Intentions", "M. Contrasting", "Combined")) +
   ylim(-3,12) +
   theme(axis.text=element_text(size=14),
