@@ -52,9 +52,14 @@ preregDat$baseline_sociocog_subjnorm1 <- sample(1:7, replace = TRUE, size = 660)
 preregDat$baseline_sociocog_behControl1 <- sample(1:7, replace = TRUE, size = 660)
 preregDat$baseline_sociocog_behControl2 <- sample(1:7, replace = TRUE, size = 660)
 preregDat$baseline_sociocog_behControl3 <- sample(1:7, replace = TRUE, size = 660)
-preregDat$baseline_sociocog_commitDirect1 <- sample(1:7, replace = TRUE, size = 660)
-preregDat$baseline_sociocog_commitDirect2 <- sample(1:7, replace = TRUE, size = 660)
-preregDat$baseline_sociocog_commitDirect3 <- sample(1:7, replace = TRUE, size = 660)
+
+# Goal Commitment at Baseline
+preregDat$baseline_commitDirect1 <- sample(1:7, replace = TRUE, size = 660)
+preregDat$baseline_commitDirect2 <- sample(1:7, replace = TRUE, size = 660)
+preregDat$baseline_commitDirect3 <- sample(1:7, replace = TRUE, size = 660)
+preregDat$baseline_commitIndirect1 <- sample(1:7, replace = TRUE, size = 660)
+preregDat$baseline_commitIndirect2 <- sample(1:7, replace = TRUE, size = 660)
+preregDat$baseline_commitIndirect3 <- sample(1:7, replace = TRUE, size = 660)
 
 # Treatment Group
 preregDat$treatment <- rep(c("control", "impInt", "mentCont", "combiTreat"), length.out=660)
