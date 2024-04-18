@@ -350,46 +350,6 @@ H_att3 <- hypothesis(modexp_att, "treatmentcombiTreat:baseline_sociocog_att_cent
 # Effect size
 bayes_R2(modexp_att)
 
-#### Commitment (direct measure) at baseline ####
-
-# Model fitting
-modexp_commitDirect <- brm(follow_physAct ~ baseline_physAct_centered + treatment*baseline_commitDirect_centered,
-                          data = datscores, 
-                          family = "gaussian",
-                          prior = modelpriors,
-                          sample_prior = "yes") 
-
-# Parameter estimation
-summary(modexp_commitDirect)
-
-# Hypothesis testing
-H_commitDirect1 <- hypothesis(modexp_commitDirect, "treatmentimpInt:baseline_commitDirect_centered = 0")
-H_commitDirect2 <- hypothesis(modexp_commitDirect, "treatmentmentCont:baseline_commitDirect_centered = 0")
-H_commitDirect3 <- hypothesis(modexp_commitDirect, "treatmentcombiTreat:baseline_commitDirect_centered  = 0")
-
-# Effect size
-bayes_R2(modexp_commitDirect)
-
-#### Commitment (indirect measure) at baseline ####
-
-# Model fitting
-modexp_commitIndirect <- brm(follow_physAct ~ baseline_physAct_centered + treatment*baseline_commitIndirect_centered,
-                           data = datscores, 
-                           family = "gaussian",
-                           prior = modelpriors,
-                           sample_prior = "yes") 
-
-# Parameter estimation
-summary(modexp_commitIndirect)
-
-# Hypothesis testing
-H_commitIndirect1 <- hypothesis(modexp_commitIndirect, "treatmentimpInt:baseline_commitIndirect_centered = 0")
-H_commitIndirect2 <- hypothesis(modexp_commitIndirect, "treatmentmentCont:baseline_commitIndirect_centered = 0")
-H_commitIndirect3 <- hypothesis(modexp_commitIndirect, "treatmentcombiTreat:baseline_commitIndirect_centered  = 0")
-
-# Effect size
-bayes_R2(modexp_commitIndirect)
-
 #### Subjective norms at baseline ####
 
 # Model fitting
@@ -430,21 +390,51 @@ H_behControl3 <- hypothesis(modexp_behControl, "treatmentcombiTreat:baseline_soc
 # Effect size
 bayes_R2(modexp_behControl)
 
+#### Commitment (direct measure) at baseline ####
+
+# Model fitting
+modexp_commitDirect <- brm(follow_physAct ~ baseline_physAct_centered + treatment*baseline_commitDirect_centered,
+                          data = datscores, 
+                          family = "gaussian",
+                          prior = modelpriors,
+                          sample_prior = "yes") 
+
+# Parameter estimation
+summary(modexp_commitDirect)
+
+# Hypothesis testing
+H_commitDirect1 <- hypothesis(modexp_commitDirect, "treatmentimpInt:baseline_commitDirect_centered = 0")
+H_commitDirect2 <- hypothesis(modexp_commitDirect, "treatmentmentCont:baseline_commitDirect_centered = 0")
+H_commitDirect3 <- hypothesis(modexp_commitDirect, "treatmentcombiTreat:baseline_commitDirect_centered  = 0")
+
+# Effect size
+bayes_R2(modexp_commitDirect)
+
+#### Commitment (indirect measure) at baseline ####
+
+# Model fitting
+modexp_commitIndirect <- brm(follow_physAct ~ baseline_physAct_centered + treatment*baseline_commitIndirect_centered,
+                           data = datscores, 
+                           family = "gaussian",
+                           prior = modelpriors,
+                           sample_prior = "yes") 
+
+# Parameter estimation
+summary(modexp_commitIndirect)
+
+# Hypothesis testing
+H_commitIndirect1 <- hypothesis(modexp_commitIndirect, "treatmentimpInt:baseline_commitIndirect_centered = 0")
+H_commitIndirect2 <- hypothesis(modexp_commitIndirect, "treatmentmentCont:baseline_commitIndirect_centered = 0")
+H_commitIndirect3 <- hypothesis(modexp_commitIndirect, "treatmentcombiTreat:baseline_commitIndirect_centered  = 0")
+
+# Effect size
+bayes_R2(modexp_commitIndirect)
+
+
 ################# Exploratory Mediation Hypotheses #############################
 
 # Use default prior distributions in brms
 rm(modelpriors)
-
-#### treatment -> commitment (indirect measure) -> physical activity ####
-
-f1 <- bf(post_commitIndirect ~ baseline_physAct_centered + treatment)
-f2 <- bf(follow_physAct ~ baseline_physAct_centered + treatment + post_commitIndirect)
-med1 <- brm(f1+f2+set_rescor(FALSE), data = datscores)
-
-mediation(med1)
-
-# Effect size
-bayes_R2(med1)
 
 #### treatment -> commitment (direct measure) -> physical activity ####
 
@@ -456,6 +446,17 @@ mediation(med2)
 
 # Effect size
 bayes_R2(med2)
+
+#### treatment -> commitment (indirect measure) -> physical activity ####
+
+f1 <- bf(post_commitIndirect ~ baseline_physAct_centered + treatment)
+f2 <- bf(follow_physAct ~ baseline_physAct_centered + treatment + post_commitIndirect)
+med1 <- brm(f1+f2+set_rescor(FALSE), data = datscores)
+
+mediation(med1)
+
+# Effect size
+bayes_R2(med1)
 
 #### treatment -> experienced automaticity -> physical activity ####
 
