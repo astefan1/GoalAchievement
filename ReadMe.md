@@ -37,10 +37,13 @@ All scripts relating to the design analysis conducted prior to data collection c
 
 ## Preregistered analyses
 
-* The folder 📂`preregistered_analyses` contains two scripts that were submitted together with the Stage 2 Registered Report (i.e., prior to data collection)to describe the planned analyses.
-    * The script ` 'generateData_Preregistration.R` generates mock data to conduct the analyses.
-    * The script `preregistered_analyses.R` contains an overview of all planned analyses (conducted based on the mock data)
+The folder 📂`preregistered_analyses` contains two scripts that were submitted together with the Stage 2 Registered Report (i.e., prior to data collection)to describe the planned analyses.
+    
+* The script ` 'generateData_Preregistration.R` generates mock data to conduct the analyses.
+* The script `preregistered_analyses.R` contains an overview of all planned analyses (conducted based on the mock data)
 
 ## Data analysis
 
 The folder 📂`data_analysis` contains the scripts necessary to reproduce all results reported in the manuscript. Generally, it follows the logic of the preregistered analyses described in the respective folder. However, analyses are distributed across multiple scripts to make them easier identifiable.
+
+   * The script ` 'generateData_Preregistration.R` generates mock data to conduct the analyses.
