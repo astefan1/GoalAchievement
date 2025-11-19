@@ -49,7 +49,17 @@ The folder 📂`data_analysis` contains the scripts necessary to reproduce all r
    * ` preprocessing.R` contains all steps of data preprocessing and computes descriptive statistics participant demographics
    * ` analysis_scales_reliability.R` computes Bayesian estimates of McDonald's Omega for all scales (these are reported in the Methods section)
    * ` analysis_dropout_rates.R` contains all analyses of treatment-dependent attrition, exclusion, and protocol adherence 
-   * ` analysis_H1.R`, ` analysis_H2.R`, ` analysis_H3-1.R`, ` analysis_H3-2.R` contain all confirmatory preregistered analyses for Hypothesis 1-3, respectively
-   * 
+   * ` analysis_H1.R`, ` analysis_H2.R`, ` analysis_H3-1.R`, ` analysis_H3-2.R` contain all confirmatory preregistered analyses for Hypothesis 1-3, respectively, as well as the corresponding robustness checks
+   * Scripts with the prefix `analysis_expl_mod_` contain preregistered exploratory moderation analyses. The word in the suffix indicates the moderating variable. For example, `analysis_expl_mod_attitudes.R` contains analyses where attitudes act as the moderator.
+   * Scripts with the prefix `analysis_expl_med_` contain preregistered exploratory mediation analyses. The word in the suffix indicates the mediator. For example, `analysis_expl_med_automaticity.R` contains all analyses where automaticity is the mediator.
+   * The scripts `analysis_descriptives.R` and `figure_descriptives.R` refer to analyses of descriptive statistics reported in the supplementary materials and Figure 3 in the manuscript
 
 __Reproducibility__: Bayesian analyses rely on Hamiltonian Monte Carlo sampling. We set a seed to make the random process reproducible on our machine, but since compiling is idiosyncratic on each machine, the seed will not guarantee reproducibility on other machines. This means that all Bayesian analyses are only reproducible with Monte Carlo error, i.e., Bayes factors and posterior estimates may deviate slightly from reported results if analyses are re-executed on a different machine. To make all analyses that depend on fitted model objects reproducible and allow others to investigate our posterior samples, we share the fitted model objects on the OSF.
+
+## Data
+
+The raw study data can be found on the highest level in the file `Dataset MCIIAP.xlsx`. The preprocessed data as well as additional data for analyses of attrition and exclusion can be found in the  📂`data_analysis`.
+
+## Figures
+
+Figures are saved in the 📂`figures` directory in the 📂`data_analysis` folder.
