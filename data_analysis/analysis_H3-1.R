@@ -231,6 +231,9 @@ hyp31_1_PPA_Ordinal <- brm(commitmentDirect ~ 1 + time*treatment + (1 | ID) + (1
 # Parameter estimation
 summary(hyp31_1_PPA_Ordinal)
 
+posterior_draws <- brms::as_draws_matrix(hyp31_1_PPA_Ordinal)[,c("b_Intercept[1]", "b_Intercept[2]", "b_Intercept[3]", "b_Intercept[4]", "b_Intercept[5]", "b_Intercept[6]", "b_time", "b_treatmentimpInt", "b_treatmentmentCont", "b_treatmentcombiTreat", "b_time:treatmentimpInt", "b_time:treatmentmentCont", "b_time:treatmentcombiTreat")]
+bayesplot::mcmc_areas(posterior_draws)
+
 # Model comparison to initial analysis
 bayes_factor(hyp31_1_PPA, hyp31_1_PPA_Ordinal)
 

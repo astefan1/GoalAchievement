@@ -1,4 +1,4 @@
-# README for code submitted with the Stage II Registered Report
+# README for code submitted with the Stage III Registered Report
 
 ## Design analysis
 
@@ -39,11 +39,17 @@ All scripts relating to the design analysis conducted prior to data collection c
 
 The folder 📂`preregistered_analyses` contains two scripts that were submitted together with the Stage 2 Registered Report (i.e., prior to data collection)to describe the planned analyses.
     
-* The script ` 'generateData_Preregistration.R` generates mock data to conduct the analyses.
+* The script ` generateData_Preregistration.R` generates mock data to conduct the analyses.
 * The script `preregistered_analyses.R` contains an overview of all planned analyses (conducted based on the mock data)
 
 ## Data analysis
 
 The folder 📂`data_analysis` contains the scripts necessary to reproduce all results reported in the manuscript. Generally, it follows the logic of the preregistered analyses described in the respective folder. However, analyses are distributed across multiple scripts to make them easier identifiable.
 
-   * The script ` 'generateData_Preregistration.R` generates mock data to conduct the analyses.
+   * ` preprocessing.R` contains all steps of data preprocessing and computes descriptive statistics participant demographics
+   * ` analysis_scales_reliability.R` computes Bayesian estimates of McDonald's Omega for all scales (these are reported in the Methods section)
+   * ` analysis_dropout_rates.R` contains all analyses of treatment-dependent attrition, exclusion, and protocol adherence 
+   * ` analysis_H1.R`, ` analysis_H2.R`, ` analysis_H3-1.R`, ` analysis_H3-2.R` contain all confirmatory preregistered analyses for Hypothesis 1-3, respectively
+   * 
+
+__Reproducibility__: Bayesian analyses rely on Hamiltonian Monte Carlo sampling. We set a seed to make the random process reproducible on our machine, but since compiling is idiosyncratic on each machine, the seed will not guarantee reproducibility on other machines. This means that all Bayesian analyses are only reproducible with Monte Carlo error, i.e., Bayes factors and posterior estimates may deviate slightly from reported results if analyses are re-executed on a different machine. To make all analyses that depend on fitted model objects reproducible and allow others to investigate our posterior samples, we share the fitted model objects on the OSF.
