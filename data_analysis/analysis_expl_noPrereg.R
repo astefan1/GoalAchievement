@@ -234,4 +234,108 @@ Auto_PPA_Res
 
 ################### Conduct tests for direct goal commitment ###################
 
+# Intention-to-treat analysis
 
+DComData_ITT <- GAData_ITT # no exclusions because looking at post-test
+DCom_ITT_Res <- matrix(NA, nrow=4, ncol=5, dimnames = list(1:4, c("Condition", "d", "CI_lower", "CI_upper", "BF")))
+DCom_ITT_Res <- as.data.frame(DCom_ITT_Res)
+for(i in 1:4){ # for each condition
+  # Compute BF
+  tempBF <- ttestBF(DComData_ITT$post_commitDirect[DComData_ITT$treatment == whichTreatment[i]],
+                    DComData_ITT$baseline_commitDirect[DComData_ITT$treatment == whichTreatment[i]],
+                    paired = TRUE) 
+  # Save posterior draws
+  tempdraws <- ttestBF(DComData_ITT$post_commitDirect[DComData_ITT$treatment == whichTreatment[i]],
+                       DComData_ITT$baseline_commitDirect[DComData_ITT$treatment == whichTreatment[i]],
+                       paired = TRUE,
+                       posterior = TRUE,
+                       iterations = 100000) # posterior draws
+  # Compute effect size estimate and 95%CI                 
+  tempD <- c(summary(tempdraws)$statistics["delta", "Mean"],
+             summary(tempdraws)$quantiles["delta", c("2.5%", "97.5%")])
+  # Save results in table
+  DCom_ITT_Res[i,] <- c(whichTreatment[i], tempD, tempBF)
+  
+}
+
+DCom_ITT_Res
+
+# Per-protocol analysis
+
+DComData_PPA <- GAData_PPA # no exclusions because looking at post-test
+DCom_PPA_Res <- matrix(NA, nrow=4, ncol=5, dimnames = list(1:4, c("Condition", "d", "CI_lower", "CI_upper", "BF")))
+DCom_PPA_Res <- as.data.frame(DCom_PPA_Res)
+for(i in 1:4){ # for each condition
+  # Compute BF
+    tempBF <- ttestBF(DComData_PPA$post_commitDirect[DComData_PPA$treatment == whichTreatment[i]],
+                      DComData_PPA$baseline_commitDirect[DComData_PPA$treatment == whichTreatment[i]],
+                      paired = TRUE) 
+    # Save posterior draws
+    tempdraws <- ttestBF(DComData_PPA$post_commitDirect[DComData_PPA$treatment == whichTreatment[i]],
+                         DComData_PPA$baseline_commitDirect[DComData_PPA$treatment == whichTreatment[i]],
+                         paired = TRUE,
+                         posterior = TRUE,
+                         iterations = 100000) # posterior draws
+    # Compute effect size estimate and 95%CI                 
+    tempD <- c(summary(tempdraws)$statistics["delta", "Mean"],
+              summary(tempdraws)$quantiles["delta", c("2.5%", "97.5%")])
+    # Save results in table
+    DCom_PPA_Res[i,] <- c(whichTreatment[i], tempD, tempBF)
+
+}
+
+DCom_PPA_Res
+
+################### Conduct tests for indirect goal commitment #################
+
+# Intention-to-treat analysis
+
+IComData_ITT <- GAData_ITT # no exclusions because looking at post-test
+ICom_ITT_Res <- matrix(NA, nrow=4, ncol=5, dimnames = list(1:4, c("Condition", "d", "CI_lower", "CI_upper", "BF")))
+ICom_ITT_Res <- as.data.frame(ICom_ITT_Res)
+for(i in 1:4){ # for each condition
+  # Compute BF
+  tempBF <- ttestBF(IComData_ITT$post_commitIndirect[IComData_ITT$treatment == whichTreatment[i]],
+                    IComData_ITT$baseline_commitIndirect[IComData_ITT$treatment == whichTreatment[i]],
+                    paired = TRUE) 
+  # Save posterior draws
+  tempdraws <- ttestBF(IComData_ITT$post_commitIndirect[IComData_ITT$treatment == whichTreatment[i]],
+                       IComData_ITT$baseline_commitIndirect[IComData_ITT$treatment == whichTreatment[i]],
+                       paired = TRUE,
+                       posterior = TRUE,
+                       iterations = 100000) # posterior draws
+  # Compute effect size estimate and 95%CI                 
+  tempD <- c(summary(tempdraws)$statistics["delta", "Mean"],
+             summary(tempdraws)$quantiles["delta", c("2.5%", "97.5%")])
+  # Save results in table
+  ICom_ITT_Res[i,] <- c(whichTreatment[i], tempD, tempBF)
+  
+}
+
+ICom_ITT_Res
+
+# Per-protocol analysis
+
+IComData_PPA <- GAData_PPA # no exclusions because looking at post-test
+ICom_PPA_Res <- matrix(NA, nrow=4, ncol=5, dimnames = list(1:4, c("Condition", "d", "CI_lower", "CI_upper", "BF")))
+ICom_PPA_Res <- as.data.frame(ICom_PPA_Res)
+for(i in 1:4){ # for each condition
+  # Compute BF
+  tempBF <- ttestBF(IComData_PPA$post_commitIndirect[IComData_PPA$treatment == whichTreatment[i]],
+                    IComData_PPA$baseline_commitIndirect[IComData_PPA$treatment == whichTreatment[i]],
+                    paired = TRUE) 
+  # Save posterior draws
+  tempdraws <- ttestBF(IComData_PPA$post_commitIndirect[IComData_PPA$treatment == whichTreatment[i]],
+                       IComData_PPA$baseline_commitIndirect[IComData_PPA$treatment == whichTreatment[i]],
+                       paired = TRUE,
+                       posterior = TRUE,
+                       iterations = 100000) # posterior draws
+  # Compute effect size estimate and 95%CI                 
+  tempD <- c(summary(tempdraws)$statistics["delta", "Mean"],
+             summary(tempdraws)$quantiles["delta", c("2.5%", "97.5%")])
+  # Save results in table
+  ICom_PPA_Res[i,] <- c(whichTreatment[i], tempD, tempBF)
+  
+}
+
+ICom_PPA_Res
