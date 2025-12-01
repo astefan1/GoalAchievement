@@ -12,15 +12,37 @@ library(BayesFactor)
 
 # Full dataset
 GAData_ITT <- read.csv("GAData_preprocessed.csv")
+GAData_ITT$treatment <- factor(GAData_ITT$treatment) # convert treatment into factor
 GAData_PPA <- GAData_ITT[GAData_ITT$PerProtocolAnalyses == "Yes",]
 
-# Exclude participants with high GLTEQ scores
-GAData_ITT_ExclGLTEQ <- GAData_ITT[GAData_ITT$follow_physAct < 190, ]
-GAData_PPA_ExclGLTEQ <- GAData_PPA[GAData_PPA$follow_physAct < 190, ]
-
-# Exclude participants with > 40 hours per week
-hoursPerWeek <- rowSums(GAData_ITT[, c("follow_physActStrenuous", "follow_physActModerate", "follow_physActMild")])/2
-GAData_ITT_ExclHours <- GAData_ITT[hoursPerWeek <= 40, ]
-GAData_PPA_ExclHours <- GAData_ITT[(GAData_ITT$PerProtocolAnalyses == "Yes") & (hoursPerWeek <= 40),]
-
 ################### Conduct tests for physical activity ########################
+
+# ITT Data
+1/anovaBF(baseline_physAct ~ treatment, data = GAData_ITT)
+
+# PPA Data
+1/anovaBF(baseline_physAct ~ treatment, data = GAData_PPA)
+
+###################### Conduct tests for automaticity ##########################
+
+# ITT Data
+1/anovaBF(baseline_automaticity ~ treatment, data = GAData_ITT)
+
+# PPA Data
+1/anovaBF(baseline_automaticity ~ treatment, data = GAData_PPA)
+
+################# Conduct tests for direct commitment ##########################
+
+# ITT Data
+1/anovaBF(baseline_commitDirect ~ treatment, data = GAData_ITT)
+
+# PPA Data
+1/anovaBF(baseline_commitDirect ~ treatment, data = GAData_PPA)
+
+################# Conduct tests for indirect commitment ########################
+
+# ITT Data
+1/anovaBF(baseline_commitIndirect ~ treatment, data = GAData_ITT)
+
+# PPA Data
+1/anovaBF(baseline_commitIndirect ~ treatment, data = GAData_PPA)
