@@ -35,6 +35,16 @@ GAData_PPA_ExclGLTEQ <- GAData_PPA[GAData_PPA$follow_physAct < 190, ]
 GAData_PPA$hoursPerWeek <- rowSums(GAData_PPA[, c("follow_physActStrenuous", "follow_physActModerate", "follow_physActMild")])/2
 GAData_PPA_ExclHours <- GAData_PPA[GAData_PPA$hoursPerWeek <= 40, ]
 
+################### Descriptive statistics for moderators ######################
+
+mean(GAData_ITT$baseline_sociocog_att)
+sd(GAData_ITT$baseline_sociocog_att)
+range(GAData_ITT$baseline_sociocog_att)
+
+mean(GAData_PPA$baseline_sociocog_att)
+sd(GAData_PPA$baseline_sociocog_att)
+range(GAData_PPA$baseline_sociocog_att)
+
 ############################ Prior distributions ###############################
 
 modelpriors <- c(set_prior("normal(0, 10)", class = "b"),
